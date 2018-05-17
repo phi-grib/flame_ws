@@ -1,0 +1,20 @@
+html, .side-menu{
+    min-height: 100%;
+}
+body{
+    
+   
+}
+#info{
+    background-color: ;
+}
+#manage{
+  display: inline;
+  margin-bottom: 20px;
+}
+#opts{
+    overflow: inherit;
+}
+#addForm, #importLabel{
+    width: 55%;
+}

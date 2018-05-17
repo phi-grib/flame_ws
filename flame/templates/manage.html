@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!--Main bootstrap and own css-->
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/style2.css" rel="stylesheet">
+
+  <!--jQuery links-->
+  <script src="/static/scripts/jquery.min.js"></script>
+  <script src="/static/scripts/smiles-drawer.min.js"></script>
+
+  <!--Bootstrap tree view -->
+  <script src="/static/scripts/bootstrap-treeview.min.js"></script>
+  <link href="/static/css/bootstrap-treeview.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--Font awesome-->
+  <link rel="stylesheet" href="/static/css/fontawesome-all.css">
+
+  <!--Own scripts-->
+  <script src="/static/scripts/utils.js"></script>
+  <script src="/static/scripts/manage.js"></script>
+
+  <!--Popper-->
+  <script src="/static/scripts/popper.min.js"></script>
+  <!--Tab icon and name-->
+  <link rel="shortcut icon" href="/static/images/etransafe.ico" type="image/x-icon">
+  <title>Flame manage tooltip</title>
+</head>
+
+<body class="bg-light">
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="#">
+      <img src="/static/images/etransafe-logo.png" width="125" height="50" class="d-inline-block align-top" alt=""> Flame manage tooltip
+    </a>
+  </nav>
+  <div class="row">
+    <div class="col-lg-3 col-md-12 bg-light" id="options">
+      <p class="display-4 text-center">Models available</p>
+      
+      <div id="tree" class="px-3"></div>
+      <div class="float-left px-3">
+        <i class="fas fa-plus" onclick="expandTree()" data-toggle="tooltip" data-placement="top" title="Expand all nodes"></i>
+        <i class="fas fa-minus" onclick="collapseTree()" data-toggle="tooltip" data-placement="top" title="Collapse all nodes"></i>
+      </div>
+    </div>
+    <div class="col-lg-5 col-md-12 bg-light">
+      <div id="detailsCont">
+        <p id="details" class="display-4 text-center">Select a model</p>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-12 bg-light ">
+      <div id="optionsCont">
+        <p class="display-4 text-center">Options</p>
+        <p id="manage" class="h2">Manage</p>
+
+        <div id="opts">
+          <fieldset class="form-group mt-3 ">
+            <legend>Publish options</legend>
+            <button class="btn btn-outline-primary " onclick="cloneModel()">Clone</button>
+            <button class="btn btn-outline-primary ">Export</button>
+          </fieldset>
+          <br>
+          <fieldset class="form-group mt-3">
+            <legend>Delete options</legend>
+            <button class="btn btn-outline-danger" onclick="deleteFamily()">Delete all family</button>
+            <button class="btn btn-outline-danger" onclick="deleteVersion()">Delete selected version</button>
+          </fieldset>
+          <br>
+          <fieldset class="form-group mt-3">
+            <legend>Create new model options</legend>
+            <button class="btn btn-outline-success" id="add">Create new model</button>
+            <button class="btn btn-outline-success" id="import">Import model</button>
+            <div class="form-group" id="addForm">
+              <br>
+              <label for="name">Model name</label>
+              <input type="name" class="form-control" id="name" aria-describedby="addModel" placeholder="Enter model name">
+              <button class="btn btn-outline-primary mt-2" id="add" onclick="addModel()">Add model</button>
+            </div>
+            <div class="form-group" id="importForm">
+              <br>
+              <label for="name">Model import</label>
+              <input type="file" class="form-control" id="importLabel" name="importLabel" aria-describedby="importModel" placeholder="Upload file">
+              <button class="btn btn-outline-primary mt-2" id="import" type="submit" onclick="uploadFiles()">Import model</button>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <input type="text" id="hiddenInput" disabled hidden>
+  <input type="text" id="hiddenInputChild" disabled hidden>
+</body>
+
+</html>
