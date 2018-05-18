@@ -18,3 +18,7 @@ body{
 #addForm, #importLabel{
     width: 55%;
 }
+table {
+    position: relative;
+    bottom: -58px;
+}

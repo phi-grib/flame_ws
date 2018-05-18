@@ -179,7 +179,7 @@ function deleteFamily() {
     if (confDialog("Remove", model)) {
         if (/*modelExists(model)*/true) {    //TODO repair modelExists func, it returns undefinded
             $.post('/deleteFamily', { "model": model })
-                .complete(function (result) {
+                .always(function (result) {
                     console.log("pass");                // As in add it also says that it fails but it really works
                     loadTree();
                 });
@@ -207,7 +207,7 @@ function deleteVersion() {
     var modelChild = $("#hiddenInputChild").val(); // value from input
     if (confDialog("Remove", modelChild)) {
         $.post('/deleteVersion', { "model": model, "version": modelChild })
-            .complete(function (result) {
+            .always(function (result) {
                 console.log(result);
                 loadTree();
             });
@@ -223,7 +223,7 @@ function cloneModel() {
     var model = $("#hiddenInput").val(); // value from input
     if (confDialog("Clone: ", model)) {
         $.post('/cloneModel', { "model": model })
-            .complete(function (result) {
+            .always(function (result) {
                 loadTree();
                 console.log("cloned");
             });
@@ -282,23 +282,39 @@ function selectedNode() {
         // Check if the node selected is father or child
         if (typeof parentNode.text !== 'string') {     //father selected
             console.log("father");
-            $("#details").text("Currently working with " + data.text);
+            $("#details").text(data.text);
             $("#hiddenInput").val(data.text);
-            $("#manage").text("Selected model: " + data.text);
+            $("#manage").text(data.text);
             $("#hiddenInputChild").val("");
             $("#manage").addClass("border");
             $("#manage").addClass("rounded");
         } else {                                      //child selected
             console.log("child");
-            $("#details").text("Currently working with " + parentNode.text + "." + data.text);
+            $("#details").text(parentNode.text + "." + data.text);
             $("#hiddenInput").val(parentNode.text);
             $("#hiddenInputChild").val(data.text);
-            $("#manage").text("Selected model: " + parentNode.text + "." + data.text);
+            $("#manage").text(parentNode.text + "." + data.text);
             $("#manage").addClass("border");
             $("#manage").addClass("rounded");
         }
         return data;
     });
+}
+
+function generateTable(){
+    var testData = {
+        product: "Live JSON generator",
+        version: 3.1,
+        releaseDate: "2014-06-25T00:00:00.000Z",
+        demo: 23
+    }
+    //console.log(testData);
+    //var testArr = JSON.parse(testData);
+    for (var key in testData) {
+        if (testData.hasOwnProperty(key)) {
+            $("#tBody").append("<tr><td>"+key+"</td><td>"+testData[key]+"</td></tr>")
+        }
+    }
 }
 
 
@@ -320,6 +336,7 @@ $(document).ready(function () {
     $("#importLabel").val("");
     //Load the main tree
     loadTree();
+    generateTable();
     //Hide all forms
     hideAll();
     // Toggles the forms between hide and show

@@ -26,14 +26,22 @@
   <script src="/static/scripts/popper.min.js"></script>
   <!--Tab icon and name-->
   <link rel="shortcut icon" href="/static/images/etransafe.ico" type="image/x-icon">
-  <title>Flame manage tooltip</title>
+  <title>Flame manage interface</title>
 </head>
 
 <body class="bg-light">
-  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-    <a class="navbar-brand" href="#">
-      <img src="/static/images/etransafe-logo.png" width="125" height="50" class="d-inline-block align-top" alt=""> Flame manage tooltip
-    </a>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Flame manage interface</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+      </ul>
+      <span class="navbar-text">
+        <img src="/static/images/etransafe-logo.png" width="150" height="50" class="d-inline-block align-top" alt="">
+      </span>
+    </div>
   </nav>
   <div class="row">
     <div class="col-lg-3 col-md-12 bg-light" id="options">
@@ -46,32 +54,41 @@
       </div>
     </div>
     <div class="col-lg-5 col-md-12 bg-light">
+      <br>
       <div id="detailsCont">
-        <p id="details" class="display-4 text-center">Select a model</p>
+        <table class="table table-striped table-bordered">
+          <thead id="tHead" colspan="2">
+            <tr>
+              <th id="details">Select a model</th>
+            </tr>
+          </thead>
+          <tbody id="tBody">
+
+          </tbody>
+        </table>
       </div>
     </div>
     <div class="col-lg-4 col-md-12 bg-light ">
       <div id="optionsCont">
-        <p class="display-4 text-center">Options</p>
-        <p id="manage" class="h2">Manage</p>
-
+        <p class="display-4">Tools</p>
+        <p id="manage" class="h2">Tools</p>
         <div id="opts">
           <fieldset class="form-group mt-3 ">
-            <legend>Publish options</legend>
+            <legend>Publish</legend>
             <button class="btn btn-outline-primary " onclick="cloneModel()">Clone</button>
             <button class="btn btn-outline-primary ">Export</button>
           </fieldset>
           <br>
           <fieldset class="form-group mt-3">
-            <legend>Delete options</legend>
-            <button class="btn btn-outline-danger" onclick="deleteFamily()">Delete all family</button>
-            <button class="btn btn-outline-danger" onclick="deleteVersion()">Delete selected version</button>
+            <legend>Delete</legend>
+            <button class="btn btn-outline-danger" onclick="deleteFamily()">Model</button>
+            <button class="btn btn-outline-danger" onclick="deleteVersion()">Version</button>
           </fieldset>
           <br>
           <fieldset class="form-group mt-3">
-            <legend>Create new model options</legend>
-            <button class="btn btn-outline-success" id="add">Create new model</button>
-            <button class="btn btn-outline-success" id="import">Import model</button>
+            <legend>Create</legend>
+            <button class="btn btn-outline-success" id="add">New model</button>
+            <button class="btn btn-outline-success" id="import">Import</button>
             <div class="form-group" id="addForm">
               <br>
               <label for="name">Model name</label>
