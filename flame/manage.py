@@ -164,7 +164,7 @@ def action_import (model):
     if os.path.isdir (bdir) :
         return False, 'endpoint already exists'
 
-    importfile = os.path.abspath(model+'.tgz')
+    importfile = os.path.abspath(model)
     
     if not os.path.isfile (importfile):
         return False, 'importing package '+importfile+' not found'

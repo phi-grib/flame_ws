@@ -119,8 +119,8 @@ class FlameCloneModel(object):
 @cherrypy.expose
 
 class FlameImportModel(object):
-    @cherrypy.tools.accept(media='text/plain')
-    def POST(self, model):
+    @cherrypy.tools.accept(media='application/gzip')
+    def GET(self, model):
         result = manage.action_import
         return result
 

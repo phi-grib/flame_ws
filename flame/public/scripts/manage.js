@@ -301,7 +301,7 @@ function selectedNode() {
     });
 }
 
-function generateTable(){
+function generateTable() {
     var testData = {
         product: "Live JSON generator",
         version: 3.1,
@@ -312,7 +312,7 @@ function generateTable(){
     //var testArr = JSON.parse(testData);
     for (var key in testData) {
         if (testData.hasOwnProperty(key)) {
-            $("#tBody").append("<tr><td>"+key+"</td><td>"+testData[key]+"</td></tr>")
+            $("#tBody").append("<tr><td>" + key + "</td><td>" + testData[key] + "</td></tr>")
         }
     }
 }
@@ -320,10 +320,18 @@ function generateTable(){
 
 function importModel() {
     var ifile = document.getElementById("importLabel").files[0];
-    if (uploadImport(ifile, uploadModel) == false) {
-        $("#data-console").text("unable to upload file, prediction aborted...");
-        return;
-    };
+    // alert(ifile);
+    $.ajax({
+        url:'/importModel',
+        data:{"model": ifile},
+        type:'GET',
+        contentType: false,
+        processData: false,
+    });
+    /*$.post("/importModel", {"model": ifile})
+        .always(function(result){
+            alert(result);
+        });*/
 }
 
 // main
