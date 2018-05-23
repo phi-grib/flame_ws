@@ -141,10 +141,12 @@ class FlameInfoWS(object):
         return json.dumps(data)
 
 @cherrypy.expose
-class FlameShowInfo(object):
+class FlameModelInfo(object):
+
     @cherrypy.tools.accept(media='text/plain')
-    def POST(self, model):
-        return model
+    def POST(self, model, version, output):
+        result = manage.action_info(model, version, output)
+        return result
 
 @cherrypy.expose
 class FlameDirWS(object):
@@ -204,14 +206,14 @@ if __name__ == '__main__':
             'tools.response_headers.on': True,
             'tools.response_headers.headers': [('Content-Type', 'text/plain')]
         },
-        '/static': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': './public',
-        },
-        '/showInfo': {
+        '/modelInfo': {
             'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
             'tools.response_headers.on': True,
             'tools.response_headers.headers': [('Content-Type', 'text/plain')]
+        },
+        '/static': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': './public',
         },
         'global' : {
             'server.socket_host' : '0.0.0.0',
@@ -224,10 +226,10 @@ if __name__ == '__main__':
     webapp.info = FlameInfoWS()
     webapp.dir = FlameDirWS()
     webapp.predict = FlamePredictWS()
-    webapp.showInfo = FlameShowInfo()
     webapp.addModel = FlameAddModel()
     webapp.deleteFamily = FlameDeleteFamily()
     webapp.deleteVersion = FlameDeleteVersion()
     webapp.cloneModel = FlameCloneModel()
     webapp.importModel = FlameImportModel()
+    webapp.modelInfo = FlameModelInfo()
     cherrypy.quickstart(webapp, '/', conf)

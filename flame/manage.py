@@ -25,6 +25,7 @@ import sys
 import shutil
 import tarfile
 import json
+import pickle
 import util.utils as utils
 
 def action_new (model):
@@ -241,4 +242,31 @@ def action_dir ():
 
     print (json.dumps(results))
     
+    return True, json.dumps(results)
+
+def action_info(model, version=None, output='text'):
+    ''' Returns a text or JSON with info for a given model and version '''
+
+    if not model:
+        return False, 'empty model label'
+
+    if version==None:
+        return False, 'no version provided'
+
+    rdir = utils.model_path(model, version)
+    if not os.path.isfile(os.path.join(rdir,'info.pkl')):
+        return False, 'info not found'
+
+    with open(os.path.join(rdir,'info.pkl'),'rb') as handle:
+        results = pickle.load (handle)
+        results += pickle.load (handle)
+
+    if output=='text':
+        for val in results:
+            if len(val)<3:
+                print (val)
+            else:
+                print (val[0],' (', val[1], ') : ', val[2])
+        return True, 'model informed OK'
+
     return True, json.dumps(results)

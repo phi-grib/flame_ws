@@ -317,6 +317,16 @@ function generateTable() {
     }
 }
 
+function getInfo() {
+    var model = $("#hiddenInput").val();
+    var version = $("#hiddenInputChild").val();
+    var output= "text";
+    $.post('/modelInfo', {"model": model, "version": version, "output": output})
+    .always(function(result){
+        console.log(result);
+    });
+}
+
 
 function importModel() {
     /*$("#uploadForm").on("submit", function(e){
@@ -342,9 +352,10 @@ function importModel() {
         });*/
         var model = document.getElementById("importLabel").files[0];
         //var model = $("#importLabel").files[0];
+        console.log(model);
         console.log(model.name);
         var xhr = new XMLHttpRequest();
-    xhr.open("POST", 'importModel', true);
+    xhr.open("POST", '/importModel', true);
     xhr.timeout = 600000;
     xhr.setRequestHeader('model', model.name);
     xhr.send(model);
