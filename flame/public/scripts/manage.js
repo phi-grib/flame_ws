@@ -319,19 +319,35 @@ function generateTable() {
 
 
 function importModel() {
-    var ifile = document.getElementById("importLabel").files[0];
-    // alert(ifile);
-    $.ajax({
-        url:'/importModel',
-        data:{"model": ifile},
-        type:'GET',
-        contentType: false,
-        processData: false,
-    });
-    /*$.post("/importModel", {"model": ifile})
+    /*$("#uploadForm").on("submit", function(e){
+        e.preventDefault();
+        var f = $(this);
+        var ifile = document.getElementById("importLabel").files[0];
+        var model = new FormData(document.getElementById("uploadForm"));
+        model.append("model", ifile);
+        $.ajax({
+            url: "/importModel",
+            type: "post",
+            data: model,
+            cache: false,
+            contentType: false,
+            processData: false
+        }).always(function(result){
+            console.log(result);
+        });
+    });*/
+    /*$.get("/importModel", {"model": imodel})
         .always(function(result){
-            alert(result);
+            console.log(result);
         });*/
+        var model = document.getElementById("importLabel").files[0];
+        //var model = $("#importLabel").files[0];
+        console.log(model.name);
+        var xhr = new XMLHttpRequest();
+    xhr.open("POST", 'importModel', true);
+    xhr.timeout = 600000;
+    xhr.setRequestHeader('model', model.name);
+    xhr.send(model);
 }
 
 // main

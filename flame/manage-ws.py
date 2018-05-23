@@ -119,9 +119,10 @@ class FlameCloneModel(object):
 @cherrypy.expose
 
 class FlameImportModel(object):
-    @cherrypy.tools.accept(media='application/gzip')
-    def GET(self, model):
-        result = manage.action_import
+    @cherrypy.tools.accept(media='text/plain')
+    def POST(self):
+        model = cherrypy.request.headers['model']
+        result = manage.action_import(model)
         return result
 
 
@@ -130,7 +131,7 @@ class FlameImportModel(object):
 class FlameInfoWS(object):
 
     @cherrypy.tools.accept(media='text/plain')
-    def GET(self):
+    def POST(self):
         data = { "provider": utils.configuration['provider'],
                  "homepage": utils.configuration['homepage'],
                  "admin_name": utils.configuration['admin_name'],
