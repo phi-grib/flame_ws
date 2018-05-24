@@ -230,6 +230,17 @@ function cloneModel() {
     }
 }
 
+function exportModel() {
+    var model = $("#hiddenInput").val();
+    console.log(model);
+    if (confDialog("Export: ", model)) {
+        $.post('/exportModel', {"model": model})
+            .always(function(result){
+                console.log(result);
+            });
+    }
+}
+
 /**
  * Summary. Loads the main tree
  * Description. Loads the main tree with the option provided in the constructor
@@ -308,7 +319,9 @@ function generateTable() {
         releaseDate: "2014-06-25T00:00:00.000Z",
         demo: 23
     }
-    //console.log(testData);
+    console.log(typeof(testData));
+    console.log(testData);
+    console.log(JSON.stringify(testData));
     //var testArr = JSON.parse(testData);
     for (var key in testData) {
         if (testData.hasOwnProperty(key)) {
@@ -320,15 +333,19 @@ function generateTable() {
 function getInfo() {
     var model = $("#hiddenInput").val();
     var version = $("#hiddenInputChild").val();
-    var output= "text";
+    var output= "JSON";
     $.post('/modelInfo', {"model": model, "version": version, "output": output})
-    .always(function(result){
+    .done(function(result){
+        console.log(typeof(result));
         console.log(result);
+        JSON.parse(result);
+        console.log(result);
+        console.log(typeof(result));
     });
 }
 
 
-function importModel() {
+/*function importModel() {
     /*$("#uploadForm").on("submit", function(e){
         e.preventDefault();
         var f = $(this);
@@ -349,7 +366,7 @@ function importModel() {
     /*$.get("/importModel", {"model": imodel})
         .always(function(result){
             console.log(result);
-        });*/
+        });
         var model = document.getElementById("importLabel").files[0];
         //var model = $("#importLabel").files[0];
         console.log(model);
@@ -359,7 +376,7 @@ function importModel() {
     xhr.timeout = 600000;
     xhr.setRequestHeader('model', model.name);
     xhr.send(model);
-}
+}*/
 
 // main
 

@@ -90,7 +90,16 @@ class FlameAddModel(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model):
         result = manage.action_new(model)
-        return result
+        return str(result)
+
+
+@cherrypy.expose
+
+class FlameExportModel(object):
+    @cherrypy.tools.accept(media='text/plain')
+    def POST(self, model):
+        result = manage.action_export(model)
+        return str(result)
 
 @cherrypy.expose
 
@@ -105,8 +114,11 @@ class FlameDeleteFamily(object):
 class FlameDeleteVersion(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model, version):
-        result = manage.action_remove(model, version)
-        return result
+        #version = utils.intver(version)        #This doesnt works because this func converts a string to int and cant convert a string like "dev000003" to int
+        version = version.replace("ver", "")
+        version = version.lstrip( '0' )
+        result = manage.action_remove(model, int(version))
+        return str(version)
 
 @cherrypy.expose
 
@@ -145,8 +157,16 @@ class FlameModelInfo(object):
 
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model, version, output):
+        version = version.replace("ver", "")
+        version = version.lstrip( '0' )
         result = manage.action_info(model, version, output)
-        return result
+        """dicto = { "main": [x[0] for x in result[1]],
+                  "tool": [x[1] for x in result[1]],
+                  "result": [x[2] for x in result[1]]
+                }
+        finalRes = json.dumps(dicto)"""
+        print (type(result[1]))
+        return result[1]
 
 @cherrypy.expose
 class FlameDirWS(object):
@@ -182,6 +202,11 @@ if __name__ == '__main__':
             'tools.response_headers.headers': [('Content-Type', 'text/plain')]
         },
         '/addModel': {
+            'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
+            'tools.response_headers.on': True,
+            'tools.response_headers.headers': [('Content-Type', 'text/plain')]
+        },
+        '/exportModel': {
             'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
             'tools.response_headers.on': True,
             'tools.response_headers.headers': [('Content-Type', 'text/plain')]
@@ -232,4 +257,5 @@ if __name__ == '__main__':
     webapp.cloneModel = FlameCloneModel()
     webapp.importModel = FlameImportModel()
     webapp.modelInfo = FlameModelInfo()
+    webapp.exportModel = FlameExportModel()
     cherrypy.quickstart(webapp, '/', conf)

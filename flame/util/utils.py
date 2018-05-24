@@ -65,7 +65,6 @@ def model_tree_path (model):
 
 def model_path (model, version):
     ''' Returns the path to the model and version given as arguments '''
-       
     modpath = model_tree_path(model)
     
     if version == 0 :
@@ -117,7 +116,8 @@ def md5sum(filename, blocksize=65536):
 
 def intver(raw_version):
     ''' Returns an int describing at best the model version provided as argument '''
-
+    print (raw_version)
+    print (type(raw_version))
     if raw_version is None:
         return 0
     
@@ -125,7 +125,8 @@ def intver(raw_version):
         version = int(raw_version)
     except:
         version = 0
-
+    print (version)
+    print (type(version))
     return version
 
 

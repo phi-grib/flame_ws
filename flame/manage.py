@@ -253,13 +253,15 @@ def action_info(model, version=None, output='text'):
     if version==None:
         return False, 'no version provided'
 
-    rdir = utils.model_path(model, version)
+    rdir = utils.model_path(model, int(version))
     if not os.path.isfile(os.path.join(rdir,'info.pkl')):
         return False, 'info not found'
 
     with open(os.path.join(rdir,'info.pkl'),'rb') as handle:
         results = pickle.load (handle)
         results += pickle.load (handle)
+        print ("hello")
+        print (results)
 
     if output=='text':
         for val in results:
