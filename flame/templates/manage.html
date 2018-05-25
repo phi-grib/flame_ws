@@ -77,13 +77,13 @@
           <fieldset class="form-group mt-3 ">
             <legend>Publish</legend>
             <button class="btn btn-outline-primary " onclick="cloneModel()">Clone</button>
-            <button class="btn btn-outline-primary " onclick="exportModel()">Export</button>
+            <a class="btn btn-outline-primary " role="button" id="exportBTN">Export</a>
           </fieldset>
           <br>
           <fieldset class="form-group mt-3">
             <legend>Delete</legend>
             <button class="btn btn-outline-danger" onclick="deleteFamily()">Model</button>
-            <button class="btn btn-outline-danger" onclick="deleteVersion()">Version</button>
+            <button class="btn btn-outline-danger" onclick="deleteVersion()" id="deleteVersionBTN">Version</button>
           </fieldset>
           <br>
           <fieldset class="form-group mt-3">
@@ -110,8 +110,9 @@
     </div>
   </div>
 
-  <input type="text" id="hiddenInput" disabled >
-  <input type="text" id="hiddenInputChild" disabled >
+  <input type="text" id="hiddenInput" disabled hidden>
+  <input type="text" id="hiddenInputChild" disabled hidden>
+
 </body>
 
 </html>

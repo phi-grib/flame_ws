@@ -27,6 +27,7 @@ import shutil
 import tempfile
 
 from predict import Predict
+from cherrypy.lib.static import serve_file
 import manage
 import context
 import util.utils as utils
@@ -97,9 +98,18 @@ class FlameAddModel(object):
 
 class FlameExportModel(object):
     @cherrypy.tools.accept(media='text/plain')
-    def POST(self, model):
+    def GET(self, model="uiui"):
         result = manage.action_export(model)
-        return str(result)
+        #return str(result)
+        return serve_file(os.path.abspath(model+".tgz"), "application/gzip", "attachment")
+        #return os.path.abspath(model+".tgz")
+
+@cherrypy.expose
+class Download(object):
+    @cherrypy.tools.accept(media='text/plain')
+    def GET(self, path):
+        return serve_file(path)
+
 
 @cherrypy.expose
 
@@ -200,6 +210,11 @@ if __name__ == '__main__':
             'tools.response_headers.on': True,
             'tools.response_headers.headers': [('Content-Type', 'text/plain')]
         },
+        '/download': {
+            'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
+            'tools.response_headers.on': True,
+            'tools.response_headers.headers': [('Content-Type', 'text/plain')]
+        },
         '/addModel': {
             'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
             'tools.response_headers.on': True,
@@ -257,4 +272,5 @@ if __name__ == '__main__':
     webapp.importModel = FlameImportModel()
     webapp.modelInfo = FlameModelInfo()
     webapp.exportModel = FlameExportModel()
+    webapp.download = Download()
     cherrypy.quickstart(webapp, '/', conf)

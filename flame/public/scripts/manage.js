@@ -230,17 +230,6 @@ function cloneModel() {
     }
 }
 
-function exportModel() {
-    var model = $("#hiddenInput").val();
-    console.log(model);
-    if (confDialog("Export: ", model)) {
-        $.post('/exportModel', { "model": model })
-            .always(function (result) {
-                console.log(result);
-            });
-    }
-}
-
 /**
  * Summary. Loads the main tree
  * Description. Loads the main tree with the option provided in the constructor
@@ -283,6 +272,7 @@ function collapseTree() {
  */
 function selectedNode() {
     console.log("Now you can select nodes")
+    var query;
     $("#tree").on('nodeSelected', function (getSel, data) {
         console.log(data);
         console.log(data.text);
@@ -293,21 +283,37 @@ function selectedNode() {
         // Check if the node selected is father or child
         if (typeof parentNode.text !== 'string') {     //father selected
             console.log("father");
+            //Set all texts
             $("#details").text(data.text);
-            $("#hiddenInput").val(data.text);
             $("#manage").text(data.text);
+            //Disable delete version button cuz a father is selected
+            $("#deleteVersionBTN").attr("disabled", true);
+            //Set hidden inputs
             $("#hiddenInputChild").val("");
+            $("#hiddenInput").val(data.text);
+            //Set the main table 
             $("#tBody").empty();
             $("#tBody").append("<tr><td>Select a version</td></tr>");
             $("#manage").addClass("border");
             $("#manage").addClass("rounded");
+            //Sets the url to launch when the export button is pressed
+            query = "exportModel?model="+data.text;
+            document.getElementById("exportBTN").setAttribute("href", query); 
         } else {                                      //child selected
             console.log("child");
+            //Set all text
             $("#details").text(parentNode.text + "." + data.text);
+            $("#manage").text(parentNode.text + "." + data.text);
+            //Enable delete version button cuz a child is selected
+            $("#deleteVersionBTN").attr("disabled", false);
+            //Set hidden inputs
             $("#hiddenInput").val(parentNode.text);
             $("#hiddenInputChild").val(data.text);
+            //Sets the url to launch when the export button is pressed
+            query = "exportModel?model="+parentNode.text;
+            document.getElementById("exportBTN").setAttribute("href", query); 
+            //Load the main table 
             getInfo();
-            $("#manage").text(parentNode.text + "." + data.text);
             $("#manage").addClass("border");
             $("#manage").addClass("rounded");
         }
@@ -381,6 +387,8 @@ $(document).ready(function () {
     $("#hiddenInputChild").val("");
     $("#name").val("");
     $("#importLabel").val("");
+    //Disable delete version button
+    $("#deleteVersionBTN").attr("disabled", true);
     //Load the main tree
     loadTree();
     //generateTable();
