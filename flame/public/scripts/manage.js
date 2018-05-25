@@ -234,8 +234,8 @@ function exportModel() {
     var model = $("#hiddenInput").val();
     console.log(model);
     if (confDialog("Export: ", model)) {
-        $.post('/exportModel', {"model": model})
-            .always(function(result){
+        $.post('/exportModel', { "model": model })
+            .always(function (result) {
                 console.log(result);
             });
     }
@@ -288,7 +288,7 @@ function selectedNode() {
         console.log(data.text);
         parentNode = $('#tree').treeview('getParent', data);
         console.log(parentNode.text);
-
+        
 
         // Check if the node selected is father or child
         if (typeof parentNode.text !== 'string') {     //father selected
@@ -297,6 +297,8 @@ function selectedNode() {
             $("#hiddenInput").val(data.text);
             $("#manage").text(data.text);
             $("#hiddenInputChild").val("");
+            $("#tBody").empty();
+            $("#tBody").append("<tr><td>Select a version</td></tr>");
             $("#manage").addClass("border");
             $("#manage").addClass("rounded");
         } else {                                      //child selected
@@ -304,6 +306,7 @@ function selectedNode() {
             $("#details").text(parentNode.text + "." + data.text);
             $("#hiddenInput").val(parentNode.text);
             $("#hiddenInputChild").val(data.text);
+            getInfo();
             $("#manage").text(parentNode.text + "." + data.text);
             $("#manage").addClass("border");
             $("#manage").addClass("rounded");
@@ -312,36 +315,27 @@ function selectedNode() {
     });
 }
 
-function generateTable() {
-    var testData = {
-        product: "Live JSON generator",
-        version: 3.1,
-        releaseDate: "2014-06-25T00:00:00.000Z",
-        demo: 23
-    }
-    console.log(typeof(testData));
-    console.log(testData);
-    console.log(JSON.stringify(testData));
-    //var testArr = JSON.parse(testData);
-    for (var key in testData) {
-        if (testData.hasOwnProperty(key)) {
-            $("#tBody").append("<tr><td>" + key + "</td><td>" + testData[key] + "</td></tr>")
-        }
-    }
-}
-
 function getInfo() {
+    $("#tBody").empty();
     var model = $("#hiddenInput").val();
     var version = $("#hiddenInputChild").val();
-    var output= "JSON";
-    $.post('/modelInfo', {"model": model, "version": version, "output": output})
-    .done(function(result){
-        console.log(typeof(result));
-        console.log(result);
-        JSON.parse(result);
-        console.log(result);
-        console.log(typeof(result));
-    });
+    var output = "JSON";
+    $.post('/modelInfo', { "model": model, "version": version, "output": output })
+        .done(function (result) {
+            try {
+                result = JSON.parse(result);
+                console.log(result);
+                //console.log(result[1][1]);
+                var len = result.length;
+                for (var i = 0; i < len; i++) {
+                    console.log(result[i][2] /*+ result[i][1]*/);
+                    $("#tBody").append("<tr class='tElement' ><td data-toggle='tooltip' data-placement='top' title='" + result[i][1] + "'>" + result[i][0] + "</td><td>" + result[i][2] + "</td></tr>");
+                }
+            }catch{
+                $("#tBody").append("<tr><td>No info provided with this version</td></tr>");
+            }
+            
+        });
 }
 
 
@@ -363,19 +357,19 @@ function getInfo() {
             console.log(result);
         });
     });*/
-    /*$.get("/importModel", {"model": imodel})
-        .always(function(result){
-            console.log(result);
-        });
-        var model = document.getElementById("importLabel").files[0];
-        //var model = $("#importLabel").files[0];
-        console.log(model);
-        console.log(model.name);
-        var xhr = new XMLHttpRequest();
-    xhr.open("POST", '/importModel', true);
-    xhr.timeout = 600000;
-    xhr.setRequestHeader('model', model.name);
-    xhr.send(model);
+/*$.get("/importModel", {"model": imodel})
+    .always(function(result){
+        console.log(result);
+    });
+    var model = document.getElementById("importLabel").files[0];
+    //var model = $("#importLabel").files[0];
+    console.log(model);
+    console.log(model.name);
+    var xhr = new XMLHttpRequest();
+xhr.open("POST", '/importModel', true);
+xhr.timeout = 600000;
+xhr.setRequestHeader('model', model.name);
+xhr.send(model);
 }*/
 
 // main
@@ -388,7 +382,7 @@ $(document).ready(function () {
     $("#importLabel").val("");
     //Load the main tree
     loadTree();
-    generateTable();
+    //generateTable();
     //Hide all forms
     hideAll();
     // Toggles the forms between hide and show

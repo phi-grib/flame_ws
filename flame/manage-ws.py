@@ -157,14 +157,13 @@ class FlameModelInfo(object):
 
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model, version, output):
-        version = version.replace("ver", "")
-        version = version.lstrip( '0' )
+        if version=="dev":
+            version=0
+        else:
+            version = version.replace("ver", "")
+            version = version.lstrip( '0' )
+        version = utils.intver(version)
         result = manage.action_info(model, version, output)
-        """dicto = { "main": [x[0] for x in result[1]],
-                  "tool": [x[1] for x in result[1]],
-                  "result": [x[2] for x in result[1]]
-                }
-        finalRes = json.dumps(dicto)"""
         print (type(result[1]))
         return result[1]
 
