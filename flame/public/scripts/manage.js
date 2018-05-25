@@ -314,7 +314,11 @@ function selectedNode() {
         return data;
     });
 }
-
+/**
+ * Summary. Get the version details
+ * Description. Get the version details and print the result in table format.
+ * If the result is empty it informs the user about the error
+ */
 function getInfo() {
     $("#tBody").empty();
     var model = $("#hiddenInput").val();
@@ -324,11 +328,8 @@ function getInfo() {
         .done(function (result) {
             try {
                 result = JSON.parse(result);
-                console.log(result);
-                //console.log(result[1][1]);
                 var len = result.length;
                 for (var i = 0; i < len; i++) {
-                    console.log(result[i][2] /*+ result[i][1]*/);
                     $("#tBody").append("<tr class='tElement' ><td data-toggle='tooltip' data-placement='top' title='" + result[i][1] + "'>" + result[i][0] + "</td><td>" + result[i][2] + "</td></tr>");
                 }
             }catch{
