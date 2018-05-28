@@ -68,7 +68,7 @@ class Predict:
             #uses the child classes within the 'model' folder, to allow customization of
             #the processing applied to each model
             modpath = utils.module_path(self.model, self.version)
-
+            print(modpath)
             idata_child = importlib.import_module (modpath+".idata_child")
             apply_child = importlib.import_module (modpath+".apply_child")
             odata_child = importlib.import_module (modpath+".odata_child")

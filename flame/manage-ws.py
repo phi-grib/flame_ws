@@ -33,6 +33,18 @@ import context
 import util.utils as utils
 
 
+def sensitivity(y_true, y_pred):
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+    return(tp / (tp+fn))
+
+# TEMP: only to allow EBI model to run
+
+
+def specificity(y_true, y_pred):
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+    return(tn / (tn+fp))
+
+
 class FlamePredict(object):
     @cherrypy.expose
     def index(self):
@@ -57,9 +69,8 @@ class FlamePredictWS(object):
     @cherrypy.tools.accept(media='text/plain')
 
     def POST(self, ifile, model, version, temp_dir):
-
-        ifile = os.path.join(tempfile.gettempdir(),temp_dir,ifile)
         
+        ifile = os.path.join(tempfile.gettempdir(),temp_dir,ifile)
         if version[:3]=='ver': 
             version = int(version[-6:]) ## get the numbers
 
@@ -80,9 +91,9 @@ class FlamePredictWS(object):
 
         success, results = context.predict_cmd(model)
 
-        # predict = Predict(model, version)
-        # success, results = predict.run(ifile)
-
+        #predict = Predict(model, version)
+        #success, results = predict.run(ifile)
+        
         return results
 
 @cherrypy.expose

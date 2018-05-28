@@ -128,7 +128,7 @@ def action_remove (model, version):
     return True, 'version '+str(version)+' of model '+model+' removed'
 
 
-def action_list (*model):   # * makes the parameter optional
+def action_list (model):
     ''' Lists available models (if no argument is provided) and model versions (if "model" is provided as argument) '''
 
     # TODO: if no argument is provided, also list all models

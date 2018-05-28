@@ -96,6 +96,7 @@ function parseResults (results) {
     //console.log(chem_list);
     
     // header
+    // header
     var tbl_body = '<thead><tr><th>#</th>';
     for (var key in key_list){
         for (var item in manifest) {
@@ -190,14 +191,6 @@ function postPredict (temp_dir, ifile) {
 
 };
 
-function test2(){
-    $.post('/test2').done(function(results){
-        //alert("hola");
-        //alert(results);
-        //$("p").append(results);
-        console.log(results);
-    });
-}
 
 // simple utility function to download as a file text generated here (client-side)
 function download(filename, text) {
@@ -217,11 +210,6 @@ function download(filename, text) {
 // main
 $(document).ready(function() {
     
-    //Tests
-    $("#test").click(function(){
-     //   console.log("okii");
-    });
-
     // no prediction so far
     lastResults = null;
     
@@ -239,23 +227,38 @@ $(document).ready(function() {
     var versions; // object where model name and versions are stored
     
     // ask the server about available models and versions
-    $.get('/dir').done(function(results) {
+    $.get('/dir')
+    .done(function(results) {
         
         versions = JSON.parse(results);
         
         // set model selector
         var model_select = $("#model")[0];
         for (vi in versions) {
-            imodel = versions[vi][0];
+            imodel = versions[vi]["text"];
             model_select.options[vi] = new Option(imodel, +vi+1)
         }
         
         // set version selector
         var var_select = $("#version")[0];
-        vmodel = versions[0][1];
+        vmodel = versions[0]["nodes"];
         for (vj in vmodel) {
-            var_select.options[vj] = new Option(vmodel[vj],+vj+1);
+            var_select.options[vj] = new Option(vmodel[vj]["text"],+vj+1);
         }
+
+        // // set model selector
+        // var model_select = $("#model")[0];
+        // for (vi in versions) {
+        //     imodel = versions[vi][0];
+        //     model_select.options[vi] = new Option(imodel, +vi+1)
+        // }
+        
+        // // set version selector
+        // var var_select = $("#version")[0];
+        // vmodel = versions[0][1];
+        // for (vj in vmodel) {
+        //     var_select.options[vj] = new Option(vmodel[vj],+vj+1);
+        // }
         
     });
     
@@ -264,19 +267,29 @@ $(document).ready(function() {
         $("#version").empty();
         var var_select = $("#version")[0];
         for (vi in versions) {
-            if (versions[vi][0] == $("#model option:selected").text()){
+            if (versions[vi]["text"] == $("#model option:selected").text()){
                 
-                for (vj in versions[vi][1]) {
-                    var_select.options[vj] = new Option(vmodel[vj],+vj+1);
+                for (vj in versions[vi]["nodes"]) {
+                    var_select.options[vj] = new Option(vmodel[vj]["text"],+vj+1);
                 }
                 return;
             }
         }
+
+        // for (vi in versions) {
+        //     if (versions[vi][0] == $("#model option:selected").text()){
+                
+        //         for (vj in versions[vi][1]) {
+        //             var_select.options[vj] = new Option(vmodel[vj],+vj+1);
+        //         }
+        //         return;
+        //     }
+        // }
     });
     
     // "predict" button
     $("#predict").click(function(e) {
-        console.log("buttonPredict");
+        
         // make sure the browser can upload XMLHTTP requests
         if (!window.XMLHttpRequest) {          
             $("#data-console").text("this browser does not support file upload");
