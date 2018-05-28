@@ -139,10 +139,9 @@ function addModel() {
                 }).fail(function (result) {   // !!! Say that fails but it works 
                     //alert("fail");
                 });
-            loadTree();
-            $("#results").append(" <p class='text-success'>Model added correctly</p>");
+                doneModal();
+                loadTree();
         } else {
-            $("#results").append(" <p class='text-warning'>The model already exists</p>");
         }
     } else {
         alert("Name must be alphanumeric");
@@ -176,11 +175,11 @@ function deleteFamily() {
     var modelChild = $("#hiddenInputChild").val(); // value from input
     console.log(model);
     console.log(modelExists(model));
-    if (confDialog("Remove", model)) {
         if (/*modelExists(model)*/true) {    //TODO repair modelExists func, it returns undefinded
             $.post('/deleteFamily', { "model": model })
                 .always(function (result) {
                     console.log("pass");                // As in add it also says that it fails but it really works
+                    doneModal();
                     loadTree();
                 });
 
@@ -190,10 +189,6 @@ function deleteFamily() {
             console.log("The model doesnt exist, please update the page");
 
         }
-    }
-    else {
-        console.log("Aborted");
-    }
 
 }
 /**
@@ -201,17 +196,15 @@ function deleteFamily() {
  * Description. Shows a confirm dialog and if the user confirm the selected model version is removed.
  * When the transaction is completed it shows the result to the user and relaod the main tree.
  */
-//TODO: make it works
 function deleteVersion() {
     var model = $("#hiddenInput").val(); // value from input
     var modelChild = $("#hiddenInputChild").val(); // value from input
-    if (confDialog("Remove", modelChild)) {
         $.post('/deleteVersion', { "model": model, "version": modelChild })
             .always(function (result) {
                 console.log(result);
+                doneModal();
                 loadTree();
             });
-    }
 }
 
 /**
@@ -221,13 +214,12 @@ function deleteVersion() {
  */
 function cloneModel() {
     var model = $("#hiddenInput").val(); // value from input
-    if (confDialog("Clone: ", model)) {
         $.post('/cloneModel', { "model": model })
             .always(function (result) {
+                doneModal();
                 loadTree();
                 console.log("cloned");
             });
-    }
 }
 
 /**
@@ -278,7 +270,9 @@ function selectedNode() {
         console.log(data.text);
         parentNode = $('#tree').treeview('getParent', data);
         console.log(parentNode.text);
-        
+        $("#exportBTN").removeClass("disabled");
+        $("#cloneBTN").attr("disabled", false);
+        $("#deleteModelBTN").attr("disabled", false);
 
         // Check if the node selected is father or child
         if (typeof parentNode.text !== 'string') {     //father selected
@@ -345,6 +339,37 @@ function getInfo() {
         });
 }
 
+function generateModal(title, text, func){
+    var modal = "<div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'> \
+    <div class='modal-dialog' role='document'> \
+      <div class='modal-content'> \
+        <div class='modal-header'> \
+          <h5 class='modal-title' id='exampleModalLabel'>"+title+"</h5> \
+          <button type='button' class='close' data-dismiss='modal' aria-label='Close'> \
+            <span aria-hidden='true'>&times;</span> \
+          </button> \
+        </div> \
+        <div class='modal-body' id='modalBody'> \
+          "+text+" \
+        </div> \
+        <div class='modal-footer'> \
+          <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button> \
+          <button type='button' id = 'modalYes' class='btn btn-primary' onclick='"+func+"'>Yes</button> \
+        </div> \
+      </div> \
+    </div> \
+  </div>"
+  $("#modal").html(modal);
+  $("#exampleModal").modal();
+    $("#exampleModal").modal('show');
+}
+
+function doneModal(msg="Completed") {
+    $("#modalYes").remove();
+    $("#modalBody").text(msg);
+
+}
+
 
 /*function importModel() {
     /*$("#uploadForm").on("submit", function(e){
@@ -379,8 +404,22 @@ xhr.setRequestHeader('model', model.name);
 xhr.send(model);
 }*/
 
-// main
 
+function buttonClick() {
+    $("#cloneBTN").click(function(){
+        generateModal("Clone", "Do you want to clone "+$("#hiddenInput").val()+" ?", "cloneModel()");
+    });
+    $("#deleteVersionBTN").click(function(){
+        generateModal("Remove version", "Do you want to remove "+$("#hiddenInput").val()+"."+$("#hiddenInputChild").val()+" ?", "deleteVersion()");
+    });
+    $("#addE").click(function(){
+        generateModal("Add", "Do you want to add "+$("#name").val()+" ?", "addModel()");
+    });
+    $("#deleteModelBTN").click(function(){
+        generateModal("Remove model", "Do you want to remove "+$("#hiddenInput").val()+" ?", "deleteFamily()");
+    });
+}
+// main
 $(document).ready(function () {
     //Reset all inputs
     $("#hiddenInput").val("");
@@ -389,6 +428,10 @@ $(document).ready(function () {
     $("#importLabel").val("");
     //Disable delete version button
     $("#deleteVersionBTN").attr("disabled", true);
+    $("#exportBTN").attr("disabled", true);
+    $("#cloneBTN").attr("disabled", true);
+    $("#cloneBTN").attr("disabled", true);
+    $("#deleteModelBTN").attr("disabled", true);
     //Load the main tree
     loadTree();
     //generateTable();
@@ -397,5 +440,9 @@ $(document).ready(function () {
     // Toggles the forms between hide and show
     displayImportModelForm();
     displayNewModelForm();
+    //Activate all buttons
+    buttonClick();
+    
+    
 
 });

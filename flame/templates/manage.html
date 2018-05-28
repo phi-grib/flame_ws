@@ -8,6 +8,7 @@
 
   <!--jQuery links-->
   <script src="/static/scripts/jquery.min.js"></script>
+  <script src="/static/scripts/bootstrap.min.js"></script>
   <script src="/static/scripts/smiles-drawer.min.js"></script>
 
   <!--Bootstrap tree view -->
@@ -31,7 +32,7 @@
 
 <body class="bg-light">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Flame manage interface</a>
+    <a class="navbar-brand">Flame manage interface</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -44,48 +45,53 @@
       </span>
     </div>
   </nav>
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Manage</a>
+      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Predict</a>
+    </div>
+  </nav>
   <div class="row">
     <div class="col-lg-3 col-md-12 bg-light" id="options">
-      <p class="display-4 text-center">Models available</p>
+      <p class="h2 px-3">Models available</p>
 
       <div id="tree" class="px-3"></div>
       <div class="float-left px-3">
-        <i class="fas fa-plus" onclick="expandTree()" data-toggle="tooltip" data-placement="top" title="Expand all nodes"></i>
-        <i class="fas fa-minus" onclick="collapseTree()" data-toggle="tooltip" data-placement="top" title="Collapse all nodes"></i>
+        <button class="btn btn-outline-primary mt-2" data-toggle="tooltip" data-placement="top" title="Expand all nodes" onclick="expandTree()"><i class="fas fa-plus"></i></button>
+        <button class="btn btn-outline-primary mt-2 ml-1" data-toggle="tooltip" data-placement="top" title="Collapse all nodes" onclick="collapseTree()"><i class="fas fa-minus"></i></button>
       </div>
     </div>
     <div class="col-lg-5 col-md-12 bg-light">
       <br>
       <div id="detailsCont">
         <table class="table table-striped table-bordered">
-          <thead id="tHead" colspan="2">
+          <thead id="tHead">
             <tr>
-              <th id="details">Select a model version</th>
+              <th id="details"colspan="2">Select a model version</th>
             </tr>
           </thead>
           <tbody id="tBody">
-
           </tbody>
         </table>
       </div>
     </div>
     <div class="col-lg-4 col-md-12 bg-light ">
       <div id="optionsCont">
-        <p class="display-4">Tools</p>
-        <p id="manage" class="h2">Tools</p>
+        <p class="h2">Tools</p>
+        <p id="manage" class="h3">Tools</p>
         <div id="opts">
           <fieldset class="form-group mt-3 ">
             <legend>Publish</legend>
-            <button class="btn btn-outline-primary " onclick="cloneModel()">Clone</button>
-            <a class="btn btn-outline-primary " role="button" id="exportBTN">Export</a>
+            <button class="btn btn-outline-primary " id="cloneBTN">Clone</button>
+            <a class="btn btn-outline-primary disabled" role="button" id="exportBTN" id="exportBTN">Export</a>
           </fieldset>
-          <br>
+          <hr class="line">
           <fieldset class="form-group mt-3">
             <legend>Delete</legend>
-            <button class="btn btn-outline-danger" onclick="deleteFamily()">Model</button>
-            <button class="btn btn-outline-danger" onclick="deleteVersion()" id="deleteVersionBTN">Version</button>
+            <button class="btn btn-outline-danger" id="deleteModelBTN">Model</button>
+            <button class="btn btn-outline-danger" id="deleteVersionBTN">Version</button>
           </fieldset>
-          <br>
+          <hr class="line">
           <fieldset class="form-group mt-3">
             <legend>Create</legend>
             <button class="btn btn-outline-success" id="add">New model</button>
@@ -93,8 +99,8 @@
             <div class="form-group" id="addForm">
               <br>
               <label for="name">Model name</label>
-              <input type="name" class="form-control" id="name" aria-describedby="addModel" placeholder="Enter model name">
-              <button class="btn btn-outline-primary mt-2" id="add" onclick="addModel()">Add model</button>
+              <input type="text" class="form-control" id="name" aria-describedby="addModel" placeholder="Enter model name">
+              <button class="btn btn-outline-primary mt-2" id="addE">Add model</button>
             </div>
             <div class="form-group" id="importForm">
               <br>
@@ -112,6 +118,8 @@
 
   <input type="text" id="hiddenInput" disabled hidden>
   <input type="text" id="hiddenInputChild" disabled hidden>
+
+  <div id="modal"></div>
 
 </body>
 
