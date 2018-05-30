@@ -280,7 +280,6 @@ function selectedNode() {
         $("#exportBTN").removeClass("disabled");
         $("#cloneBTN").attr("disabled", false);
         $("#deleteModelBTN").attr("disabled", false);
-        
 
         // Check if the node selected is father or child
         if (typeof parentNode.text !== 'string') {     //father selected
