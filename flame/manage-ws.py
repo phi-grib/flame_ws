@@ -32,6 +32,10 @@ import manage
 import context
 import util.utils as utils
 
+#TODO: Validate names in server to prevent curl 'attacks' like curl -d "model=@@@@@@@@" -X POST http://0.0.0.0:8081/addModel
+#The user cant addModels with rare characters
+
+
 
 def sensitivity(y_true, y_pred):
     tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
@@ -153,8 +157,7 @@ class FlameCloneModel(object):
 
 class FlameImportModel(object):
     @cherrypy.tools.accept(media='text/plain')
-    def POST(self):
-        model = cherrypy.request.headers['model']
+    def POST(self, model):
         result = manage.action_import(model)
         return result
 

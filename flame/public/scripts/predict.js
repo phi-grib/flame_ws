@@ -134,7 +134,7 @@ function parseResults (results) {
             val_float = parseFloat(val);
 
             if(isNaN(val_float)){
-                tbl_body += "</td><td>"+val;
+                tbl_body += "</td class'mName'><td>"+val;
                 continue;
             }
 

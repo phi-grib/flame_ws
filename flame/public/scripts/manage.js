@@ -22,7 +22,7 @@
 //TODO: Show good results without console logs.
 
 
-// TODO Show the information of a model
+var selectModel;
 function viewFullInfo() {
     var model = $("#model option:selected").text();
 
@@ -204,6 +204,7 @@ function deleteVersion() {
                 console.log(result);
                 doneModal();
                 loadTree();
+                expandNode();
             });
 }
 
@@ -218,6 +219,7 @@ function cloneModel() {
             .always(function (result) {
                 doneModal();
                 loadTree();
+                expandNode();
                 console.log("cloned");
             });
 }
@@ -232,7 +234,7 @@ function loadTree() {
         $('#tree').treeview({
             color: undefined,
             onhoverColor: '#edba74',
-            selectedBackColor: "#e6901a",
+            selectedBackColor: "#e59d22",
             expandIcon: 'fas fa-minus',
             collapseIcon: 'fas fa-plus',
             levels: 0,
@@ -258,6 +260,10 @@ function collapseTree() {
 
 }
 
+function expandNode() {
+    $('#tree').treeview('expandNode', [selectModel.nodeId, {levels: 2, silent: true} ]);
+}
+
 /**
  * Summary. Clone the selected model
  * Description. Shows a confirm dialog and if the user confirm the selected model is cloned
@@ -274,9 +280,11 @@ function selectedNode() {
         $("#exportBTN").removeClass("disabled");
         $("#cloneBTN").attr("disabled", false);
         $("#deleteModelBTN").attr("disabled", false);
+        
 
         // Check if the node selected is father or child
         if (typeof parentNode.text !== 'string') {     //father selected
+            selectModel = data;
             console.log("father");
             //Set all texts
             $("#details").text(data.text);
@@ -295,6 +303,7 @@ function selectedNode() {
             query = "exportModel?model="+data.text;
             document.getElementById("exportBTN").setAttribute("href", query); 
         } else {                                      //child selected
+            selectModel = parentNode;
             console.log("child");
             //Set all text
             $("#details").text(parentNode.text + "." + data.text);
@@ -372,38 +381,6 @@ function doneModal(msg="Completed") {
 }
 
 
-/*function importModel() {
-    /*$("#uploadForm").on("submit", function(e){
-        e.preventDefault();
-        var f = $(this);
-        var ifile = document.getElementById("importLabel").files[0];
-        var model = new FormData(document.getElementById("uploadForm"));
-        model.append("model", ifile);
-        $.ajax({
-            url: "/importModel",
-            type: "post",
-            data: model,
-            cache: false,
-            contentType: false,
-            processData: false
-        }).always(function(result){
-            console.log(result);
-        });
-    });*/
-/*$.get("/importModel", {"model": imodel})
-    .always(function(result){
-        console.log(result);
-    });
-    var model = document.getElementById("importLabel").files[0];
-    //var model = $("#importLabel").files[0];
-    console.log(model);
-    console.log(model.name);
-    var xhr = new XMLHttpRequest();
-xhr.open("POST", '/importModel', true);
-xhr.timeout = 600000;
-xhr.setRequestHeader('model', model.name);
-xhr.send(model);
-}*/
 
 
 function buttonClick() {
