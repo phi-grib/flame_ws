@@ -12,7 +12,7 @@ body{
 #opts{
     overflow: inherit;
 }
-#addForm, #importLabel{
+#addForm, #uploadfile, #impLabel{
     width: 60%;
 }
 .navbar-brand{

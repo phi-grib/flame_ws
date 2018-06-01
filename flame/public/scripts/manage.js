@@ -453,6 +453,12 @@ $(document).ready(function () {
     displayNewModelForm();
     //Activate all buttons
     buttonClick();
+
+    $("#uploadfile").on('change',function(){
+        file = document.getElementById("uploadfile").files[0];
+        $("#impLabel").html( file.name ); 
+        $("#predict").prop('disabled', false);
+    })
     
     
 
