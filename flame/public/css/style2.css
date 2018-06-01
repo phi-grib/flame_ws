@@ -23,7 +23,10 @@ body{
     margin-left: 0%;
 }
 #exportBTN{
-    color: #1f5478
+    color: #007bff
+}
+#exportBTN:hover{
+    color : white;
 }
 .tabItem {
     color: #e6901a;

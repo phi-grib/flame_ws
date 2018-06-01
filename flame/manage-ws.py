@@ -25,6 +25,7 @@ import cherrypy
 import json
 import shutil
 import tempfile
+import re
 
 from predict import Predict
 from cherrypy.lib.static import serve_file
@@ -105,8 +106,11 @@ class FlamePredictWS(object):
 class FlameAddModel(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model):
-        result = manage.action_new(model)
-        return str(result)
+        if re.match('^[\w-]+$', model):
+            result = manage.action_new(model)
+            return str(result)
+        else:
+            return "Non alphanumeric character detected. Aborting operation"
 
 
 @cherrypy.expose

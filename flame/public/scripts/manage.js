@@ -259,7 +259,9 @@ function collapseTree() {
     $('#tree').treeview('collapseAll', { silent: true });
 
 }
-
+/**
+ * Summary. Expand the seleted node
+ */
 function expandNode() {
     $('#tree').treeview('expandNode', [selectModel.nodeId, {levels: 2, silent: true} ]);
 }
@@ -347,7 +349,13 @@ function getInfo() {
             
         });
 }
-
+/**
+ * Summary: Generate the modal and show it
+ * Description: Generate the modal including the text, title and function to call when the yes button is pressed
+ * @param {string} title modal ttle
+ * @param {string} text modal text
+ * @param {string} func function to call   
+ */
 function generateModal(title, text, func){
     var modal = "<div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'> \
     <div class='modal-dialog' role='document'> \
@@ -372,7 +380,11 @@ function generateModal(title, text, func){
   $("#exampleModal").modal();
     $("#exampleModal").modal('show');
 }
-
+/**
+ * Summary: Show a modal with a message
+ * Description: Show a  modal with a message removing te yes button. By default the message is Completed
+ * @param {string} msg="Completed" 
+ */
 function doneModal(msg="Completed") {
     $("#modalYes").remove();
     $("#modalBody").text(msg);
@@ -381,7 +393,10 @@ function doneModal(msg="Completed") {
 
 
 
-
+/**
+ * Summary: Activates all button handlers
+ * Description: Activates all button handlers and set the text modal, action and title
+ */
 function buttonClick() {
     $("#cloneBTN").click(function(){
         generateModal("Clone", "Do you want to clone "+$("#hiddenInput").val()+" ?", "cloneModel()");
