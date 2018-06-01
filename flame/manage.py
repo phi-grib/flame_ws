@@ -157,6 +157,8 @@ def action_list (model):
 def action_import (model):
     ''' Creates a new model tree from a tarbal file with the name "model.tgz" '''
     
+    print ('inside manage.py, action_import', model)
+    
     if not model:
         return False, 'empty model label'
 

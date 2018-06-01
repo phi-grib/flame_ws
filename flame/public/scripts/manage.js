@@ -147,6 +147,25 @@ function addModel() {
         alert("Name must be alphanumeric");
     }
 }
+
+function uploadModel() {
+    var ifile = document.getElementById("uploadfile").files[0];
+    if (upload(ifile, '', importModel)==false) {
+        $("#data-console").text("unable to upload file, prediction aborted...");
+        return;
+    };
+}
+
+
+function importModel(temp_dir, name) {
+    console.log ('importing model: '+name)
+
+    $.post('/importModel', { "model": name })
+        .always(function (result) {
+
+        });
+}
+
 /**
  * Summary. Shows a confirm dialog
  * Description. Shows a confirm dialog with a message

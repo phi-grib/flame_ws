@@ -74,7 +74,7 @@ function upload(file, temp_dir, postPredict) {
     return true;
 }
 
-function uploadImport(file, importModel) {
+function uploadImport(file) {
     var xhr = new XMLHttpRequest();
 
     xhr.ontimeout = function () {
@@ -93,12 +93,13 @@ function uploadImport(file, importModel) {
         importModel(file.name);
     };
 
+    console.log (file.name)
 
     xhr.open('POST', '/upload', true); 
     xhr.timeout = 600000; //600.000 ms, 10 minutes!
 
     xhr.setRequestHeader('X-Filename', file.name);
-    xhr.setRequestHeader('Temp-Dir', temp_dir);
+    xhr.setRequestHeader('Temp-Dir', '');
 
     xhr.send(file);
 

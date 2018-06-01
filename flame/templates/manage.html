@@ -115,10 +115,21 @@
                 <div class="form-group" id="importForm">
                   <br>
                   <label for="name">Model import</label>
-                    <form id="uploadForm" enctype="multipart/form-data">
+                    
+                  
+                    <!-- <form id="uploadForm" enctype="multipart/form-data">
                     <input type="file" class="form-control" id="importLabel" name="importLabel" aria-describedby="importModel" placeholder="Upload file">
-                    <button class="btn btn-outline-primary mt-2" id="import" onclick="importModel()">Import model</button>
-                  </form>
+                    <button class="btn btn-outline-primary mt-2" id="import" onclick="uploadModel()">Import model</button>
+                    </form> -->
+
+                    <div id="uploadForm">
+                      <input type="file" class="custom-file-input" id="uploadfile">
+                      <label class="custom-file-label" for="uploadfile" id="ifile-label">Choose file</label>
+                      <button class="btn btn-outline-primary mt-2" id="import" onclick="uploadModel()">Import model</button>
+                    </div>
+
+
+
                 </div>
               </fieldset>
             </div>

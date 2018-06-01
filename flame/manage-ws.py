@@ -60,10 +60,17 @@ class FlamePredict(object):
         filename = os.path.basename(cherrypy.request.headers['x-filename'])
         temp_dir = os.path.basename(cherrypy.request.headers['temp-dir'])
 
-        path = os.path.join(tempfile.gettempdir(),temp_dir)
-        os.mkdir (path)
- 
+        if temp_dir != '':
+            path = os.path.join(tempfile.gettempdir(),temp_dir)
+            os.mkdir (path)
+        else:
+            # path = tempfile.gettempdir()
+            path = './'
+        
         destination = os.path.join(path, filename)
+        
+        print ('uploading...', filename, path, destination)
+        
         with open(destination, 'wb') as f:
             shutil.copyfileobj(cherrypy.request.body, f)
 
@@ -158,8 +165,12 @@ class FlameCloneModel(object):
 class FlameImportModel(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model):
+
+        # model = os.path.join(tempfile.gettempdir(),model)
+        model = os.path.join('./',model)
+        print ('in import', model)
         result = manage.action_import(model)
-        return result
+        return 'test'
 
 
 
