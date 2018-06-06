@@ -29,6 +29,16 @@ function randomDir() {
     return text;
 }
 
+// checks if a string/value is a integer 
+function isInt(x) {
+    return !isNaN(x) && eval(x).toString().length == parseInt(eval(x)).toString().length
+}
+
+// checks if a string/value number is a float 
+function isFloat(x) {
+    return !isNaN(x) && !isInt(eval(x)) && x.toString().length > 0
+}
+
 // AJAX upload function
 function upload(file, temp_dir, postPredict) {
     var xhr = new XMLHttpRequest();
@@ -68,38 +78,6 @@ function upload(file, temp_dir, postPredict) {
 
     xhr.setRequestHeader('X-Filename', file.name);
     xhr.setRequestHeader('Temp-Dir', temp_dir);
-
-    xhr.send(file);
-
-    return true;
-}
-
-function uploadImport(file) {
-    var xhr = new XMLHttpRequest();
-
-    xhr.ontimeout = function () {
-        $("#processing").prop('hidden', true);        
-        alert('File upload timed out. Results can be incomplete');
-        return false;
-    };
-
-    xhr.onerror = function () {
-        $("#processing").prop('hidden', true);        
-        alert('File upload error!');
-        return false;
-    }
-
-    xhr.onload = function () {
-        importModel(file.name);
-    };
-
-    console.log (file.name)
-
-    xhr.open('POST', '/upload', true); 
-    xhr.timeout = 600000; //600.000 ms, 10 minutes!
-
-    xhr.setRequestHeader('X-Filename', file.name);
-    xhr.setRequestHeader('Temp-Dir', '');
 
     xhr.send(file);
 

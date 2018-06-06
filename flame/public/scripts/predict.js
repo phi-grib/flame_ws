@@ -96,7 +96,6 @@ function parseResults (results) {
     //console.log(chem_list);
     
     // header
-    // header
     var tbl_body = '<thead><tr><th>#</th>';
     for (var key in key_list){
         for (var item in manifest) {
@@ -134,7 +133,7 @@ function parseResults (results) {
             val_float = parseFloat(val);
 
             if(isNaN(val_float)){
-                tbl_body += "</td class'mName'><td>"+val;
+                tbl_body += "</td><td>"+val;
                 continue;
             }
 

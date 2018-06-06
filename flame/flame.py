@@ -43,10 +43,8 @@ def specificity(y_true, y_pred):
 
 def manage_cmd(args):
     ''' Instantiates a Build object to build a model using the given input file (training series) and model (name of endpoint, eg. 'CACO2') '''
-    print(args)
-    print(args.version)
+
     version = utils.intver(args.version)
-    print(args.version)
 
     if args.action == 'new':
         success, results = manage.action_new(args.endpoint)
