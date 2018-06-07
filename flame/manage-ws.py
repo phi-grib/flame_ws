@@ -120,17 +120,19 @@ class FlameAddModel(object):
 
 class FlameExportModel(object):
     @cherrypy.tools.accept(media='text/plain')
-    def GET(self, model="uiui"):
+    def GET(self, model):
         result = manage.action_export(model)
         #return str(result)
-        return serve_file(os.path.abspath(model+".tgz"), "application/gzip", "attachment")
+        #return (os.path.abspath(model+".tgz"))
         #return os.path.abspath(model+".tgz")
+        return "true"
 
 @cherrypy.expose
 class Download(object):
     @cherrypy.tools.accept(media='text/plain')
-    def GET(self, path):
-        return serve_file(path)
+    def GET(self, model):
+        return serve_file(os.path.abspath(model+".tgz"), "application/gzip", "attachment")
+        #return serve_file(path, "application/gzip", "attachment")
 
 
 @cherrypy.expose

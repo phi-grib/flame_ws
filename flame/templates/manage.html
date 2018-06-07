@@ -33,6 +33,7 @@
 </head>
 
 <body class="bg-light">
+  <div id="main">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand">Flame</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
@@ -91,7 +92,7 @@
         <div class="col-lg-4 col-md-12 bg-light ">
           <div id="optionsCont">
             <p class="h2">Tools</p>
-            <p id="manage" class="font-weight-bold">none selected</p>
+            <p id="manage" class="font-weight-bold">None selected</p>
             <div id="opts">
               <fieldset class="form-group mt-3 ">
                 <legend>Publish</legend>
@@ -129,8 +130,11 @@
             </div>
           </div>
         </div>
+        <div id="overlay"></div>
       </div>
+      
     </div>
+    
     <div class="tab-pane fade" id="predictTab" role="tabpanel" aria-labelledby="nav-predict-tab">
       <div class="container">
 
@@ -213,7 +217,10 @@
   <input type="text" id="hiddenInputChild" disabled hidden>
 
   <div id="modal"></div>
-
+</div>
+<div class="row">
+  <div class="loader2" id="exporting" hidden="true"></div>
+</div>
 </body>
 
 </html>

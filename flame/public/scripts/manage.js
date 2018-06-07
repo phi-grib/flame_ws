@@ -139,9 +139,9 @@ function addModel() {
                 }).fail(function (result) {   // !!! Say that fails but it works 
                     //alert("fail");
                 });
-                doneModal();
-                loadTree();
-                hideAll();
+            doneModal();
+            loadTree();
+            hideAll();
         } else {
         }
     } else {
@@ -151,7 +151,7 @@ function addModel() {
 
 function uploadModel() {
     var ifile = document.getElementById("uploadfile").files[0];
-    if (upload(ifile, '', importModel)==false) {
+    if (upload(ifile, '', importModel) == false) {
         $("#data-console").text("unable to upload file, prediction aborted...");
         return;
     };
@@ -196,20 +196,20 @@ function deleteFamily() {
     var modelChild = $("#hiddenInputChild").val(); // value from input
     console.log(model);
     console.log(modelExists(model));
-        if (/*modelExists(model)*/true) {    //TODO repair modelExists func, it returns undefinded
-            $.post('/deleteFamily', { "model": model })
-                .always(function (result) {
-                    console.log("pass");                // As in add it also says that it fails but it really works
-                    doneModal();
-                    loadTree();
-                });
+    if (/*modelExists(model)*/true) {    //TODO repair modelExists func, it returns undefinded
+        $.post('/deleteFamily', { "model": model })
+            .always(function (result) {
+                console.log("pass");                // As in add it also says that it fails but it really works
+                doneModal();
+                loadTree();
+            });
 
-            console.log("Family removed");
-        }
-        else {
-            console.log("The model doesnt exist, please update the page");
+        console.log("Family removed");
+    }
+    else {
+        console.log("The model doesnt exist, please update the page");
 
-        }
+    }
 
 }
 /**
@@ -220,13 +220,13 @@ function deleteFamily() {
 function deleteVersion() {
     var model = $("#hiddenInput").val(); // value from input
     var modelChild = $("#hiddenInputChild").val(); // value from input
-        $.post('/deleteVersion', { "model": model, "version": modelChild })
-            .always(function (result) {
-                console.log(result);
-                doneModal();
-                loadTree();
-                expandNode();
-            });
+    $.post('/deleteVersion', { "model": model, "version": modelChild })
+        .always(function (result) {
+            console.log(result);
+            doneModal();
+            loadTree();
+            expandNode();
+        });
 }
 
 /**
@@ -236,13 +236,13 @@ function deleteVersion() {
  */
 function cloneModel() {
     var model = $("#hiddenInput").val(); // value from input
-        $.post('/cloneModel', { "model": model })
-            .always(function (result) {
-                doneModal();
-                loadTree();
-                expandNode();
-                console.log("cloned");
-            });
+    $.post('/cloneModel', { "model": model })
+        .always(function (result) {
+            doneModal();
+            loadTree();
+            expandNode();
+            console.log("cloned");
+        });
 }
 
 /**
@@ -258,6 +258,8 @@ function loadTree() {
             selectedBackColor: "#e59d22",
             expandIcon: 'fas fa-plus',
             collapseIcon: 'fas fa-minus',
+            backColor: '#f8f9fa',
+            borderColor: '#dfe0e1',
             levels: 0,
             data: result
         });
@@ -284,7 +286,7 @@ function collapseTree() {
  * Summary. Expand the seleted node
  */
 function expandNode() {
-    $('#tree').treeview('expandNode', [selectModel.nodeId, {levels: 2, silent: true} ]);
+    $('#tree').treeview('expandNode', [selectModel.nodeId, { levels: 2, silent: true }]);
 }
 
 /**
@@ -322,8 +324,8 @@ function selectedNode() {
             // $("#manage").addClass("border");
             // $("#manage").addClass("rounded");
             //Sets the url to launch when the export button is pressed
-            query = "exportModel?model="+data.text;
-            document.getElementById("exportBTN").setAttribute("href", query); 
+            query = "exportModel?model=" + data.text;
+            //document.getElementById("exportBTN").setAttribute("href", query); 
         } else {                                      //child selected
             selectModel = parentNode;
             console.log("child");
@@ -336,8 +338,8 @@ function selectedNode() {
             $("#hiddenInput").val(parentNode.text);
             $("#hiddenInputChild").val(data.text);
             //Sets the url to launch when the export button is pressed
-            query = "exportModel?model="+parentNode.text;
-            document.getElementById("exportBTN").setAttribute("href", query); 
+            query = "exportModel?model=" + parentNode.text;
+            //document.getElementById("exportBTN").setAttribute("href", query); 
             //Load the main table 
             getInfo();
             // $("#manage").addClass("border");
@@ -363,7 +365,7 @@ function getInfo() {
                 result = JSON.parse(result);
                 var len = result.length;
                 for (var i = 0; i < len; i++) {
-                    
+
                     val = result[i][2];
                     if (isFloat(val)) {
                         val = parseFloat(val).toFixed(3);
@@ -373,15 +375,15 @@ function getInfo() {
                     //                     + result[i][0] + "</td><td>" 
                     //                     + val + "</td></tr>");
                     $("#tBody").append("<tr class='tElement' ><td class='cssToolTip'>"
-                                        + result[i][0] + "<span>" 
-                                        + result[i][1] + "</span></td><td>" 
-                                        + val + "</td></tr>");
-                    
+                        + result[i][0] + "<span>"
+                        + result[i][1] + "</span></td><td>"
+                        + val + "</td></tr>");
+
                 }
-            }catch{
+            } catch{
                 $("#tBody").append("<tr><td>No info provided with this version</td></tr>");
             }
-            
+
         });
 }
 /**
@@ -391,28 +393,28 @@ function getInfo() {
  * @param {string} text modal text
  * @param {string} func function to call   
  */
-function generateModal(title, text, func){
+function generateModal(title, text, func) {
     var modal = "<div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'> \
     <div class='modal-dialog' role='document'> \
       <div class='modal-content'> \
         <div class='modal-header'> \
-          <h5 class='modal-title' id='exampleModalLabel'>"+title+"</h5> \
+          <h5 class='modal-title' id='exampleModalLabel'>"+ title + "</h5> \
           <button type='button' class='close' data-dismiss='modal' aria-label='Close'> \
             <span aria-hidden='true'>&times;</span> \
           </button> \
         </div> \
         <div class='modal-body' id='modalBody'> \
-          "+text+" \
+          "+ text + " \
         </div> \
         <div class='modal-footer'> \
           <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button> \
-          <button type='button' id = 'modalYes' class='btn btn-primary' onclick='"+func+"'>Yes</button> \
+          <button type='button' id = 'modalYes' class='btn btn-primary' onclick='"+ func + "'>Yes</button> \
         </div> \
       </div> \
     </div> \
   </div>"
-  $("#modal").html(modal);
-  $("#exampleModal").modal();
+    $("#modal").html(modal);
+    $("#exampleModal").modal();
     $("#exampleModal").modal('show');
 }
 /**
@@ -420,11 +422,41 @@ function generateModal(title, text, func){
  * Description: Show a  modal with a message removing te yes button. By default the message is Completed
  * @param {string} msg="Completed" 
  */
-function doneModal(msg="Completed") {
+function doneModal(msg = "Completed") {
     $("#modalYes").remove();
     $("#modalBody").text(msg);
 }
 
+function exportModel() {
+    var model = $("#hiddenInput").val();
+    $("#manageTab").css("filter", "blur(2px)");
+    $(".navbar").css("filter", "blur(2px)");
+    $(".nav").css("filter", "blur(2px)");
+    $("#nav-predict-tab").addClass("disabled");
+    $("#exporting").prop('hidden', false);
+    $("#overlay").addClass("noClick")
+    console.log(model);
+    $.get('/exportModel', { "model": model })
+        .always(function (result) {
+            $("#overlay").removeClass("noClick")
+            $("#exporting").prop('hidden', true);
+            $("#nav-predict-tab").removeClass("disabled");
+            $("#manageTab").css("filter", "blur(0px)");
+            $(".navbar").css("filter", "blur(0px)");
+            $(".nav").css("filter", "blur(0px)");
+            generateDownloadLink(model);
+        });
+}
+
+function generateDownloadLink (model) {
+    var element = document.createElement('a');
+    element.setAttribute('href', "download?model="+model);
+    element.setAttribute('download', model);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
 
 
 /**
@@ -432,17 +464,24 @@ function doneModal(msg="Completed") {
  * Description: Activates all button handlers and set the text modal, action and title
  */
 function buttonClick() {
-    $("#cloneBTN").click(function(){
-        generateModal("Clone", "Do you want to clone "+$("#hiddenInput").val()+" ?", "cloneModel()");
+    $("#cloneBTN").click(function () {
+        generateModal("Clone", "Do you want to clone " + $("#hiddenInput").val() + " ?", "cloneModel()");
     });
-    $("#deleteVersionBTN").click(function(){
-        generateModal("Remove version", "Do you want to remove "+$("#hiddenInput").val()+"."+$("#hiddenInputChild").val()+" ? <br> You will not be able to recover the version", "deleteVersion()");
+    $("#deleteVersionBTN").click(function () {
+        generateModal("Remove version", "Do you want to remove " + $("#hiddenInput").val() + "." + $("#hiddenInputChild").val() + " ? <br> You will not be able to recover the version", "deleteVersion()");
     });
-    $("#addE").click(function(){
-        generateModal("Add", "Do you want to add "+$("#name").val()+" ? <br> A new model with the given name will be created", "addModel()");
+    $("#addE").click(function () {
+        generateModal("Add", "Do you want to add " + $("#name").val() + " ? <br> A new model with the given name will be created", "addModel()");
     });
-    $("#deleteModelBTN").click(function(){
-        generateModal("Remove model", "Do you want to remove "+$("#hiddenInput").val()+" ? <br> You will not be able to recover the model", "deleteFamily()");
+    $("#deleteModelBTN").click(function () {
+        generateModal("Remove model", "Do you want to remove " + $("#hiddenInput").val() + " ? <br> You will not be able to recover the model", "deleteFamily()");
+    });
+    $("#exportBTN").click(function () {
+        exportModel();
+        console.log("export");
+    });
+    $("#teste").click(function () {
+
     });
 }
 // main
@@ -469,12 +508,12 @@ $(document).ready(function () {
     //Activate all buttons
     buttonClick();
 
-    $("#uploadfile").on('change',function(){
+    $("#uploadfile").on('change', function () {
         file = document.getElementById("uploadfile").files[0];
-        $("#impLabel").html( file.name ); 
+        $("#impLabel").html(file.name);
         $("#predict").prop('disabled', false);
     })
-    
-    
+
+    console.log(window.location.hostname);
 
 });

@@ -258,7 +258,7 @@ $(document).ready(function() {
         // for (vj in vmodel) {
         //     var_select.options[vj] = new Option(vmodel[vj],+vj+1);
         // }
-        
+        //return ;
     });
     
     // define available versions for this endpoint
