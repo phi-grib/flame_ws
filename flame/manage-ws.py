@@ -21,6 +21,7 @@
 ##    along with Flame. If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import sys
 import shutil
 import tempfile
 import json
@@ -28,8 +29,9 @@ import re
 import cherrypy
 from cherrypy.lib.static import serve_file
 
-import sys
-sys.path.insert(0,'C:/Users/mpastor/Documents/soft/flame/flame')
+# THIS PATH MUST BE DEFINED IN DEVELOPMENT ENVIRONMENTS WHERE FLAME
+# WAS NOT INSTALLED AS A PACKAGE
+sys.path.append('C:/Users/mpastor/Documents/soft/flame/flame')
 
 import manage
 import context
@@ -38,15 +40,14 @@ import util.utils as utils
 #TODO: Validate names in server to prevent curl 'attacks' like curl -d "model=@@@@@@@@" -X POST http://0.0.0.0:8081/addModel
 #The user cant addModels with rare characters
 
-# TEMP: only to allow EBI model to run
+# # TEMP: only to allow EBI model to run
+# def sensitivity(y_true, y_pred):
+#     tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+#     return(tp / (tp+fn))
 
-def sensitivity(y_true, y_pred):
-    tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
-    return(tp / (tp+fn))
-
-def specificity(y_true, y_pred):
-    tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
-    return(tn / (tn+fp))
+# def specificity(y_true, y_pred):
+#     tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+#     return(tn / (tn+fp))
 
 
 class FlamePredict(object):
