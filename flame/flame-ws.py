@@ -49,11 +49,17 @@ import util.utils as utils
 #     tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
 #     return(tn / (tn+fp))
 
+def numeric_version (text_version):
+    version=0
+    if text_version[:3]=='ver': 
+        version = int(text_version[-6:]) ## get the numbers
+    return version
+
 
 class FlamePredict(object):
     @cherrypy.expose
     def index(self):
-        return open('./templates/manage.html')
+        return open('./templates/index.html')
 
     @cherrypy.expose
     def upload(self):
@@ -80,14 +86,14 @@ class FlamePredictWS(object):
     def POST(self, ifile, model, version, temp_dir):
         
         ifile = os.path.join(tempfile.gettempdir(),temp_dir,ifile)
-        if version[:3]=='ver': 
-            version = int(version[-6:]) ## get the numbers
+        # if version[:3]=='ver': 
+        #     version = int(version[-6:]) ## get the numbers
 
-        version = utils.intver(version)
+        # version = utils.intver(version)
 
         # TODO: for now, only working for plain models (no external input sources)          
         model = {'endpoint' : model,
-                 'version' : version,
+                 'version' : numeric_version(version),
                  'infile' : ifile}
 
         success, results = context.predict_cmd(model)
@@ -128,9 +134,10 @@ class FlameDeleteFamily(object):
 class FlameDeleteVersion(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model, version):
-        version = version.replace("ver", "")
-        version = version.lstrip( '0' )
-        result = manage.action_remove(model, int(version))
+        # version = version.replace("ver", "")
+        # version = version.lstrip( '0' )
+        # result = manage.action_remove(model, int(version))
+        result = manage.action_remove(model, numeric_version(version))
         return str(version)
 
 @cherrypy.expose
@@ -164,13 +171,13 @@ class FlameInfoWS(object):
 class FlameModelInfo(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model, version, output):
-        if version=="dev":
-            version=0
-        else:
-            version = version.replace("ver", "")
-            version = version.lstrip( '0' )
-        version = utils.intver(version)
-        result = manage.action_info(model, version, output)
+        # if version=="dev":
+        #     version=0
+        # else:
+        #     version = version.replace("ver", "")
+        #     version = version.lstrip( '0' )
+        # version = utils.intver(version)
+        result = manage.action_info(model, numeric_version(version), output)
         return result[1]
 
 @cherrypy.expose
