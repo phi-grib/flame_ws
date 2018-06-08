@@ -21,14 +21,16 @@
 ##    along with Flame. If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import cherrypy
-import json
 import shutil
 import tempfile
+import json
 import re
-
-from predict import Predict
+import cherrypy
 from cherrypy.lib.static import serve_file
+
+import sys
+sys.path.insert(0,'C:/Users/mpastor/Documents/soft/flame/flame')
+
 import manage
 import context
 import util.utils as utils
@@ -36,12 +38,11 @@ import util.utils as utils
 #TODO: Validate names in server to prevent curl 'attacks' like curl -d "model=@@@@@@@@" -X POST http://0.0.0.0:8081/addModel
 #The user cant addModels with rare characters
 
+# TEMP: only to allow EBI model to run
+
 def sensitivity(y_true, y_pred):
     tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
     return(tp / (tp+fn))
-
-# TEMP: only to allow EBI model to run
-
 
 def specificity(y_true, y_pred):
     tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
@@ -73,7 +74,6 @@ class FlamePredict(object):
 
 @cherrypy.expose
 class FlamePredictWS(object):
-
     @cherrypy.tools.accept(media='text/plain')
 
     def POST(self, ifile, model, version, temp_dir):
@@ -84,28 +84,16 @@ class FlamePredictWS(object):
 
         version = utils.intver(version)
 
-        # try:
-        #     predict = Predict(ifile, model, version)
-        #     success, results = predict.run()
-        # except:
-        #     raise cherrypy.HTTPError(500)
-
-        # TODO: for now, only working for plain models (no external input sources)
-            
-
+        # TODO: for now, only working for plain models (no external input sources)          
         model = {'endpoint' : model,
                  'version' : version,
                  'infile' : ifile}
 
         success, results = context.predict_cmd(model)
-
-        #predict = Predict(model, version)
-        #success, results = predict.run(ifile)
         
         return results
 
 @cherrypy.expose
-
 class FlameAddModel(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model):
@@ -115,28 +103,20 @@ class FlameAddModel(object):
         else:
             return "Non alphanumeric character detected. Aborting operation"
 
-
 @cherrypy.expose
-
 class FlameExportModel(object):
     @cherrypy.tools.accept(media='text/plain')
     def GET(self, model):
         result = manage.action_export(model)
-        #return str(result)
-        #return (os.path.abspath(model+".tgz"))
-        #return os.path.abspath(model+".tgz")
         return "true"
 
 @cherrypy.expose
 class Download(object):
     @cherrypy.tools.accept(media='text/plain')
     def GET(self, model):
-        return serve_file(os.path.abspath(model+".tgz"), "application/gzip", "attachment")
-        #return serve_file(path, "application/gzip", "attachment")
-
+        return cherrypy.lib.static.serve_file(os.path.abspath(model+".tgz"), "application/gzip", "attachment")
 
 @cherrypy.expose
-
 class FlameDeleteFamily(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model):
@@ -144,18 +124,15 @@ class FlameDeleteFamily(object):
         return result
 
 @cherrypy.expose
-
 class FlameDeleteVersion(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model, version):
-        #version = utils.intver(version)        #This doesnt works because this func converts a string to int and cant convert a string like "dev000003" to int
         version = version.replace("ver", "")
         version = version.lstrip( '0' )
         result = manage.action_remove(model, int(version))
         return str(version)
 
 @cherrypy.expose
-
 class FlameCloneModel(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model):
@@ -163,20 +140,16 @@ class FlameCloneModel(object):
         return result
 
 @cherrypy.expose
-
 class FlameImportModel(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model):
-
         model = os.path.join(tempfile.gettempdir(),model)
         # model = os.path.join('./',model)
         result = manage.action_import(model)
         return result
 
-
 @cherrypy.expose
 class FlameInfoWS(object):
-
     @cherrypy.tools.accept(media='text/plain')
     def POST(self):
         data = { "provider": utils.configuration['provider'],
@@ -184,12 +157,10 @@ class FlameInfoWS(object):
                  "admin_name": utils.configuration['admin_name'],
                  "admin_email": utils.configuration['admin_email']
                 }   
-
         return json.dumps(data)
 
 @cherrypy.expose
 class FlameModelInfo(object):
-
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model, version, output):
         if version=="dev":
@@ -199,12 +170,10 @@ class FlameModelInfo(object):
             version = version.lstrip( '0' )
         version = utils.intver(version)
         result = manage.action_info(model, version, output)
-        print (type(result[1]))
         return result[1]
 
 @cherrypy.expose
 class FlameDirWS(object):
-
     @cherrypy.tools.accept(media='text/plain')
     def GET(self):
 

@@ -44,6 +44,7 @@ function hideAll() {
     $("#importForm").hide("fast");
     $("#addForm").hide("fast");
 }
+
 /**
  * Summary. Display the add new model form
  * Description. First hide all forms calling hideAll and display the add new model form
@@ -98,6 +99,7 @@ function alphanumericChecker(name) {
         return false;
     }
 }
+
 /**
  * Summary. Check if a model exists
  * Description. check if a model exists calling /dir function
@@ -122,6 +124,7 @@ function modelExists(model) {
     });
     //return false;
 }
+
 /**
  * Summary. Add a model.
  * Description. Add a model and check if it exists and if it is alphanumeric.
@@ -210,8 +213,8 @@ function deleteFamily() {
         console.log("The model doesnt exist, please update the page");
 
     }
-
 }
+
 /**
  * Summary. Remove the selected version
  * Description. Shows a confirm dialog and if the user confirm the selected model version is removed.
@@ -282,6 +285,7 @@ function collapseTree() {
     $('#tree').treeview('collapseAll', { silent: true });
 
 }
+
 /**
  * Summary. Expand the seleted node
  */
@@ -386,6 +390,7 @@ function getInfo() {
 
         });
 }
+
 /**
  * Summary: Generate the modal and show it
  * Description: Generate the modal including the text, title and function to call when the yes button is pressed
@@ -417,6 +422,7 @@ function generateModal(title, text, func) {
     $("#exampleModal").modal();
     $("#exampleModal").modal('show');
 }
+
 /**
  * Summary: Show a modal with a message
  * Description: Show a  modal with a message removing te yes button. By default the message is Completed
@@ -457,7 +463,6 @@ function generateDownloadLink (model) {
     element.click();
     document.body.removeChild(element);
 }
-
 
 /**
  * Summary: Activates all button handlers
