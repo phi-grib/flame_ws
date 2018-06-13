@@ -4,7 +4,7 @@ Flame_ws provides a simple web interface for managing existing models and runnin
 
 
 ## Installing
-Flame_ws asumes that Flame is already installed and reachable in the PYTHONPATH. In development environments where Flame is installed in another location, the full path must be defined (hardcoded) at the top of file flame_ws.py. 
+Flame_ws asumes that Flame is already installed and reachable in the *PYTHONPATH*. In development environments where Flame is installed in another location, the full path must be defined (hardcoded) at the top of file *flame_ws.py*. 
 
 The server is started by typing:
 
@@ -14,8 +14,33 @@ python flame-ws.py
 
 To access the web graphical interface, open a web brower and enter the address *http://localhost:8081*
 
-![Alt text](images/Flame-gui.png?raw=true "web GUI")
+The web page contains two tabs
 
+### Manage
+
+![Alt text](images/flame-ws-manage.png?raw=true "manage tab")
+
+The page is divided in three regions:
+* Models available. A list of existing models and versions, in an expandable tree
+* Model details. A detailed description of the model selected in the model tree view
+* Tools. A toolbox with commands which can be executed
+
+| Command | Equivalent Flame command | Description |
+| --- | --- | ---|
+| Clone | *python -c manage -a publish -e NEWMODEL* | Clones the development version, creating a new version in the model repository. Versions are assigned sequential numbers |
+| Export | *python -c manage -a export -e NEWMODEL* | Exports the model entry NEWMODE, creating a tar compressed file *NEWMODEL.tgz* which contains all the versions. |
+| Delete Model| *python -c manage -a kill -e NEWMODEL* | Removes NEWMODEL from the model repository. **Use with extreme care**, since the removal will be permanent and irreversible  |
+| Delete Version | *python -c manage -a remove -e NEWMODEL -v 2* | Removes the version specified from the NEWMODEL model repository |
+| New model | *python -c manage -a new -e NEWMODEL* | Creates a new entry in the model repository  |
+| Import | *python -c manage -a import -e NEWMODEL* | Imports file *NEWMODEL.tgz*, creating model NEWMODEL in the local model repository |
+
+### Predict
+
+![Alt text](images/flame-ws-predict.png?raw=true "predict tab")
+
+Select a SDFile in the *Input* field, using the browse button. Select the *model* and *version* and press the *Predict* button. After a short while, the results are shown in tabular format.
+
+Results can be exported to a .tsv formatted file pressing the *Export* button.
 
 ## Licensing
 
