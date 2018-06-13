@@ -1,6 +1,12 @@
 # Flame_ws
 
-Flame includes a simple web interface to manage models and to run predictions
+Flame_ws provides a simple web interface for managing existing models and running predictions. 
+
+
+## Installing
+Flame_ws asumes that Flame is already installed and reachable in the PYTHONPATH. In development environments where Flame is installed in another location, the full path must be defined (hardcoded) at the top of file flame_ws.py. 
+
+The server is started by typing:
 
 ```sh
 python flame-ws.py 
