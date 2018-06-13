@@ -2,6 +2,7 @@
 
 Flame_ws provides a simple web interface for managing existing models and running predictions. 
 
+Flame_ws is in active development and **no stable release has been produced so far**. Even this README is under construction, so please excuse errors and inaccuracies.
 
 ## Installing
 Flame_ws asumes that Flame is already installed and reachable in the *PYTHONPATH*. In development environments where Flame is installed in another location, the full path must be defined (hardcoded) at the top of file *flame_ws.py*. 
@@ -41,6 +42,22 @@ The page is divided in three regions:
 Select a SDFile in the *Input* field, using the browse button. Select the *model* and *version* and press the *Predict* button. After a short while, the results are shown in tabular format.
 
 Results can be exported to a .tsv formatted file pressing the *Export* button.
+
+
+## API
+
+Web API services available:
+
+(in development)
+
+| URL | HTTP verb | Input data | Return data | HTTP status codes |
+| --- | --- | --- | --- | --- |
+| /info | GET | | application/json: info_message response | 200 |
+| /dir | GET | | application/json: available_services response | 200 |
+| /predict | POST | multipart/form-data encoding: model and filename | application/json: predict_call response | 200, 500 for malformed POST message |
+
+The exact synthax of the JSON object returned by predict will be documented in detail elsewhere.
+
 
 ## Licensing
 
