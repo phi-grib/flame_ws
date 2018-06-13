@@ -31,7 +31,7 @@ from cherrypy.lib.static import serve_file
 
 # THIS PATH MUST BE DEFINED IN DEVELOPMENT ENVIRONMENTS WHERE FLAME
 # WAS NOT INSTALLED AS A PACKAGE
-sys.path.append('C:/Users/mpastor/Documents/soft/flame/flame')
+sys.path.append('/home/marc/Documents/flame/flame')
 
 import manage
 import context

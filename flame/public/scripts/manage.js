@@ -205,6 +205,7 @@ function deleteFamily() {
                 console.log("pass");                // As in add it also says that it fails but it really works
                 doneModal();
                 loadTree();
+                resetTable();
             });
 
         console.log("Family removed");
@@ -229,7 +230,15 @@ function deleteVersion() {
             doneModal();
             loadTree();
             expandNode();
+            resetTable();
         });
+}
+
+function resetTable() {
+    $("#tBody").empty();
+    $("#tBody").append("<tr><td>None selected</td></tr>");
+    $("#manage").text("None selected");
+    $("#details").text("Select a model version");
 }
 
 /**
@@ -454,9 +463,9 @@ function exportModel() {
         });
 }
 
-function generateDownloadLink (model) {
+function generateDownloadLink(model) {
     var element = document.createElement('a');
-    element.setAttribute('href', "download?model="+model);
+    element.setAttribute('href', "download?model=" + model);
     element.setAttribute('download', model);
     element.style.display = 'none';
     document.body.appendChild(element);
