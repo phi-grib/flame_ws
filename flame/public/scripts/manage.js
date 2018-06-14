@@ -35,8 +35,8 @@ function viewFullInfo() {
 
 
 /**
- * Summary. Hide all forms
- * Description. Hide the forms when you click on a form 
+ * @summary. Hide all forms
+ * @description. Hide the forms when you click on a form 
  * 
  */
 function hideAll() {
@@ -45,8 +45,8 @@ function hideAll() {
 }
 
 /**
- * Summary. Display the add new model form
- * Description. First hide all forms calling hideAll and display the add new model form
+ * @summary. Display the add new model form
+ * @description. First hide all forms calling hideAll and display the add new model form
  * 
  */
 function displayNewModelForm() {
@@ -57,8 +57,8 @@ function displayNewModelForm() {
 }
 
 /**
- * Summary. Display the import model form
- * Description. First hide all forms calling hideAll and display the import model form
+ * @summary. Display the import model form
+ * @description. First hide all forms calling hideAll and display the import model form
  * 
  */
 function displayImportModelForm() {
@@ -83,8 +83,8 @@ function download(filename, text) {
 }
 
 /**
- * Summary. Checks if a string is alphanumeric
- * Description. Check if a string is alphanumeric using a regex
+ * @summary. Checks if a string is alphanumeric
+ * @description. Check if a string is alphanumeric using a regex
  * @param {string} name String to check 
  * 
  * @returns {boolean} true if string is alphanumeric or false otherwise
@@ -100,8 +100,8 @@ function alphanumericChecker(name) {
 }
 
 /**
- * Summary. Check if a model exists
- * Description. check if a model exists calling /dir function
+ * @summary. Check if a model exists
+ * @description. check if a model exists calling /dir function
  * @param {string} model String to check 
  * 
  * @returns {boolean} true if model exists or false otherwise
@@ -125,21 +125,18 @@ function modelExists(model) {
 }
 
 /**
- * Summary. Add a model.
- * Description. Add a model and check if it exists and if it is alphanumeric.
+ * @summary. Add a model.
+ * @description. Add a model and check if it exists and if it is alphanumeric.
  * Depending on the result it shows a message or another.
  * If all is correct the combobox are reloaded to show the new element.
  */
 function addModel() {
     var name = $("#name").val(); // value from input
-    //console.log(modelExists(name));
     if (alphanumericChecker(name)) {   // passes check
         if (/*modelExists(name)===false*/true) {    //TODO repair modelExists func, it returns undefinded
             $.post('/addModel', { "model": name })
                 .done(function (result) {
-                    //console.log(result);
                 }).fail(function (result) {   // !!! Say that fails but it works 
-                    //alert("fail");
                 });
             doneModal();
             loadTree();
@@ -150,7 +147,9 @@ function addModel() {
         alert("Name must be alphanumeric");
     }
 }
-
+/**
+ * @summary: 
+ */
 function uploadModel() {
     var ifile = document.getElementById("uploadfile").files[0];
     if (upload(ifile, '', importModel) == false) {
@@ -171,8 +170,8 @@ function importModel(temp_dir, name) {
 }
 
 /**
- * Summary. Shows a confirm dialog
- * Description. Shows a confirm dialog with a message
+ * @summary. Shows a confirm dialog
+ * @description. Shows a confirm dialog with a message
  * @param {string} msg message to display 
  * @param {string} model model to display in the message 
  *
@@ -188,20 +187,17 @@ function confDialog(msg, model) {
 }
 
 /**
- * Summary. Remove all model family
- * Description. First check if the model that the user wants to remove exists (to prevent DOM modifications), if exists 
+ * @summary. Remove all model family
+ * @description. First check if the model that the user wants to remove exists (to prevent DOM modifications), if exists 
  * the app shows a confirm dialog and if the user really wants to delete the family the family is removed.
  * Show the transaction results and updates the main tree
  */
 function deleteFamily() {
     var model = $("#hiddenInput").val(); // value from input
     var modelChild = $("#hiddenInputChild").val(); // value from input
-    console.log(model);
-    console.log(modelExists(model));
     if (/*modelExists(model)*/true) {    //TODO repair modelExists func, it returns undefinded
         $.post('/deleteFamily', { "model": model })
             .always(function (result) {
-                console.log("pass");                // As in add it also says that it fails but it really works
                 doneModal();
                 loadTree();
                 resetTable();
@@ -216,8 +212,8 @@ function deleteFamily() {
 }
 
 /**
- * Summary. Remove the selected version
- * Description. Shows a confirm dialog and if the user confirm the selected model version is removed.
+ * @summary. Remove the selected version
+ * @description. Shows a confirm dialog and if the user confirm the selected model version is removed.
  * When the transaction is completed it shows the result to the user and relaod the main tree.
  */
 function deleteVersion() {
@@ -232,7 +228,9 @@ function deleteVersion() {
             resetTable();
         });
 }
-
+/**
+ * @summary. Reset the details table
+ */
 function resetTable() {
     $("#tBody").empty();
     $("#tBody").append("<tr><td>None selected</td></tr>");
@@ -241,8 +239,8 @@ function resetTable() {
 }
 
 /**
- * Summary. Clone the selected model
- * Description. Shows a confirm dialog and if the user confirm the selected model is cloned
+ * @summary. Clone the selected model
+ * @description. Shows a confirm dialog and if the user confirm the selected model is cloned
  * When the transaction is completed it shows the result to the user and relaod the main tree.
  */
 function cloneModel() {
@@ -252,13 +250,12 @@ function cloneModel() {
             doneModal();
             loadTree();
             expandNode();
-            console.log("cloned");
         });
 }
 
 /**
- * Summary. Loads the main tree
- * Description. Loads the main tree with the option provided in the constructor
+ * @summary. Loads the main tree
+ * @description. Loads the main tree with the option provided in the constructor
  */
 function loadTree() {
     $.get('/dir').done(function (result) {
@@ -281,14 +278,14 @@ function loadTree() {
 }
 
 /**
- * Summary. Expand all tree nodes
+ * @summary. Expand all tree nodes
  */
 function expandTree() {
     $("#tree").treeview("expandAll", { silent: true });
 }
 
 /**
- * Summary. Collapse all tree nodes
+ * @summary. Collapse all tree nodes
  */
 function collapseTree() {
     $('#tree').treeview('collapseAll', { silent: true });
@@ -296,25 +293,21 @@ function collapseTree() {
 }
 
 /**
- * Summary. Expand the seleted node
+ * @summary. Expand the seleted node
  */
 function expandNode() {
     $('#tree').treeview('expandNode', [selectModel.nodeId, { levels: 2, silent: true }]);
 }
 
 /**
- * Summary. Clone the selected model
- * Description. Shows a confirm dialog and if the user confirm the selected model is cloned
+ * @summary. Clone the selected model
+ * @description. Shows a confirm dialog and if the user confirm the selected model is cloned
  * When the transaction is completed it shows the result to the user and relaod the main tree.
  */
 function selectedNode() {
-    console.log("Now you can select nodes")
     var query;
     $("#tree").on('nodeSelected', function (getSel, data) {
-        console.log(data);
-        console.log(data.text);
         parentNode = $('#tree').treeview('getParent', data);
-        console.log(parentNode.text);
         $("#exportBTN").removeClass("disabled");
         $("#cloneBTN").attr("disabled", false);
         $("#deleteModelBTN").attr("disabled", false);
@@ -322,7 +315,6 @@ function selectedNode() {
         // Check if the node selected is father or child
         if (typeof parentNode.text !== 'string') {     //father selected
             selectModel = data;
-            console.log("father");
             //Set all texts
             $("#details").text(data.text);
             $("#manage").text(data.text);
@@ -338,10 +330,10 @@ function selectedNode() {
             // $("#manage").addClass("rounded");
             //Sets the url to launch when the export button is pressed
             query = "exportModel?model=" + data.text;
-            //document.getElementById("exportBTN").setAttribute("href", query); 
+            //document.getElementById("exportBTN").setAttribute("href", query);
+            loadCombos(data.text);
         } else {                                      //child selected
             selectModel = parentNode;
-            console.log("child");
             //Set all text
             $("#details").text(parentNode.text + "." + data.text);
             $("#manage").text(parentNode.text + "." + data.text);
@@ -357,14 +349,15 @@ function selectedNode() {
             getInfo();
             // $("#manage").addClass("border");
             // $("#manage").addClass("rounded");
+            loadCombos(parentNode.text, data.text);
         }
         return data;
     });
 }
 
 /**
- * Summary. Get the version details
- * Description. Get the version details and print the result in table format.
+ * @summary. Get the version details
+ * @description. Get the version details and print the result in table format.
  * If the result is empty it informs the user about the error
  */
 function getInfo() {
@@ -401,8 +394,8 @@ function getInfo() {
 }
 
 /**
- * Summary: Generate the modal and show it
- * Description: Generate the modal including the text, title and function to call when the yes button is pressed
+ * @summary: Generate the modal and show it
+ * @description: Generate the modal including the text, title and function to call when the yes button is pressed
  * @param {string} title modal ttle
  * @param {string} text modal text
  * @param {string} func function to call   
@@ -433,8 +426,8 @@ function generateModal(title, text, func) {
 }
 
 /**
- * Summary: Show a modal with a message
- * Description: Show a  modal with a message removing te yes button. By default the message is Completed
+ * @summary: Show a modal with a message
+ * @description: Show a  modal with a message removing te yes button. By default the message is Completed
  * @param {string} msg="Completed" 
  */
 function doneModal(msg = "Completed") {
@@ -450,7 +443,6 @@ function exportModel() {
     $("#nav-predict-tab").addClass("disabled");
     $("#exporting").prop('hidden', false);
     $("#overlay").addClass("noClick")
-    console.log(model);
     $.get('/exportModel', { "model": model })
         .always(function (result) {
             $("#overlay").removeClass("noClick")
@@ -474,8 +466,8 @@ function generateDownloadLink(model) {
 }
 
 /**
- * Summary: Activates all button handlers
- * Description: Activates all button handlers and set the text modal, action and title
+ * @summary: Activates all button handlers
+ * @description: Activates all button handlers and set the text modal, action and title
  */
 function buttonClick() {
     $("#cloneBTN").click(function () {
@@ -492,7 +484,6 @@ function buttonClick() {
     });
     $("#exportBTN").click(function () {
         exportModel();
-        console.log("export");
     });
     $("#teste").click(function () {
 
@@ -527,7 +518,5 @@ $(document).ready(function () {
         $("#impLabel").html(file.name);
         $("#predict").prop('disabled', false);
     })
-
-    console.log(window.location.hostname);
 
 });

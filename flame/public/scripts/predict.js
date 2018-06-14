@@ -93,7 +93,6 @@ function parseResults(results) {
         }
     }
 
-    //console.log(chem_list);
 
     // header
     var tbl_body = '<thead><tr><th>#</th>';
@@ -205,11 +204,78 @@ function download(filename, text) {
 
     document.body.removeChild(element);
 }
+/**
+ * Summary. Load both combos
+ * @description. Load model and version combo calling the server, if a param is passes the model is selected by default
+ * @param {string} selected="" the model to be selected 
+ * @param {string} selectedVersion="" the version to be selected
+ */
+function loadCombos(selected = "", selectedVersion= "") {
+    $.get('/dir')
+        .done(function (results) {
+
+            models = JSON.parse(results);
+            var model_select = $("#model")[0];
+
+            for (model in models) {
+                if (models[model]["text"] == selected.toString()) {
+                    model_select.options[model] = new Option(models[model]["text"], +model + 1, false, true);
+                } else {
+                    model_select.options[model] = new Option(models[model]["text"], +model + 1);
+                }
+
+            }
+
+            var var_select = $("#version")[0];
+            vmodel = models[0]["nodes"];
+            for (vj in vmodel) {
+                var_select.options[vj] = new Option(vmodel[vj]["text"], +vj + 1);
+            }
+            $("#model").prop("selected", function (i, selected) {
+                $("#version").empty();
+                var var_select = $("#version")[0];
+                for (vi in models) {
+                    if (models[vi]["text"] == $("#model option:selected").text()) {
+                        for (counter in models[vi]["nodes"]) {
+                            versionToShow = Object.values(models[vi]["nodes"])
+                            if (versionToShow[counter]["text"]== selectedVersion){
+                                var_select.options[counter] = new Option(versionToShow[counter]["text"], +counter + 1, false, true);    
+                            }else{
+                                var_select.options[counter] = new Option(versionToShow[counter]["text"], +counter + 1);
+                            }
+                            
+                        }
+                        return;
+                    }
+                }
+            });
+        });
+    versionChangerHandler();
+}
+
+function versionChangerHandler() {
+    // define available versions for this endpoint
+    $("#model").on('change', function (e) {
+        var versionToShow;
+        $("#version").empty();
+        var var_select = $("#version")[0];
+        for (vi in models) {
+            if (models[vi]["text"] == $("#model option:selected").text()) {
+                for (counter in models[vi]["nodes"]) {
+                    versionToShow = Object.values(models[vi]["nodes"])
+                    var_select.options[counter] = new Option(versionToShow[counter]["text"], +counter + 1);
+                }
+                return;
+            }
+        }
+    });
+}
 
 
 // main
 $(document).ready(function () {
-
+    loadCombos();
+    //versionChanger();
     // no prediction so far
     lastResults = null;
 
@@ -227,39 +293,7 @@ $(document).ready(function () {
     var versions; // object where model name and versions are stored
 
     // ask the server about available models and versions
-    $.get('/dir')
-        .done(function (results) {
 
-            models = JSON.parse(results);
-            var model_select = $("#model")[0];
-
-            for (model in models) {
-                model_select.options[model] = new Option(models[model]["text"], +model + 1);
-            }
-
-            var var_select = $("#version")[0];
-            vmodel = models[0]["nodes"];
-            for (vj in vmodel) {
-                var_select.options[vj] = new Option(vmodel[vj]["text"], +vj + 1);
-            }
-        });
-
-    // define available versions for this endpoint
-    $("#model").on('change', function (e) {
-        var versionToShow;
-        $("#version").empty();
-        var var_select = $("#version")[0];
-        for (vi in models) {
-            if (models[vi]["text"] == $("#model option:selected").text()) {
-                console.log(models[vi]["nodes"]);
-                for (counter in models[vi]["nodes"]) {
-                    versionToShow = Object.values(models[vi]["nodes"])
-                    var_select.options[counter] = new Option(versionToShow[counter]["text"], +counter + 1);
-                }
-                return;
-            }
-        }
-    });
 
     // "predict" button
     $("#predict").click(function (e) {
