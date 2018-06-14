@@ -19,7 +19,6 @@
 //     along with Flame. If not, see <http://www.gnu.org/licenses/>.
 
 //TODO: Remove all development console logs and alerts.
-//TODO: Show good results without console logs.
 
 
 var selectModel;
@@ -277,6 +276,7 @@ function loadTree() {
         });
         selectedNode();
         $("#tree ul").addClass("list-group-flush");
+        $(".list-group-item").css("font", "bold");
     });
 }
 
