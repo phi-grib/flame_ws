@@ -136,15 +136,17 @@ function addModel() {
         if (/*modelExists(name)===false*/true) {    //TODO repair modelExists func, it returns undefinded
             $.post('/addModel', { "model": name })
                 .done(function (result) {
+                    doneModal();
+                    loadTree();
+                    hideAll();
                 }).fail(function (result) {   // !!! Say that fails but it works 
+                    modalError(result)
                 });
-            doneModal();
-            loadTree();
-            hideAll();
+            
         } else {
         }
     } else {
-        alert("Name must be alphanumeric");
+        doneModal("Name must be alphanumeric");
     }
 }
 /**
@@ -197,11 +199,15 @@ function deleteFamily() {
     var modelChild = $("#hiddenInputChild").val(); // value from input
     if (/*modelExists(model)*/true) {    //TODO repair modelExists func, it returns undefinded
         $.post('/deleteFamily', { "model": model })
-            .always(function (result) {
+            .done(function (result) {
+                console.log(result);
                 doneModal();
                 loadTree();
                 resetTable();
-            });
+            })
+            .fail(function (result){
+                modalError(result);
+            }); 
 
         console.log("Family removed");
     }
@@ -220,12 +226,14 @@ function deleteVersion() {
     var model = $("#hiddenInput").val(); // value from input
     var modelChild = $("#hiddenInputChild").val(); // value from input
     $.post('/deleteVersion', { "model": model, "version": modelChild })
-        .always(function (result) {
-            console.log(result);
+        .done(function (result) {
             doneModal();
             loadTree();
             expandNode();
             resetTable();
+        })
+        .fail(function (result){
+            modalError(result);
         });
 }
 /**
@@ -246,10 +254,13 @@ function resetTable() {
 function cloneModel() {
     var model = $("#hiddenInput").val(); // value from input
     $.post('/cloneModel', { "model": model })
-        .always(function (result) {
+        .done(function (result) {
             doneModal();
             loadTree();
             expandNode();
+        })
+        .fail(function(result){
+            modalError(result);
         });
 }
 
@@ -388,7 +399,12 @@ function getInfo() {
                 $("#tBody").append("<tr><td>No info provided with this version</td></tr>");
             }
 
+        })
+        .fail(function(result){
+            modalError(result);
+            console.log(result);
         });
+            
 }
 
 /**
@@ -423,6 +439,30 @@ function generateModal(title, text, func) {
     $("#exampleModal").modal('show');
 }
 
+function modalError(msg) {
+    var modal = "<div class='modal fade' tabindex='-1' role='dialog' id='errorModal'> \
+    <div class='modal-dialog'  role = 'document' > \
+    <div class='modal-content'> \
+        <div class='modal-header'> \
+          <h5 class='modal-title'>An error has occurred</h5> \
+          <button type='button' class='close' data-dismiss='modal'  \ aria-label='Close'> \
+            <span aria-hidden='true'>&times;</span> \
+          </button> \
+        </div> \
+    <div class='modal-body'> \
+          <p>Error: "+msg+"</p> \
+        </div> \
+    <div class='modal-footer'> \
+          <button type='button' class='btn btn-secondary' \ data-dismiss='modal'>Close</button> \
+        </div > \
+      </div > \
+    </div > \
+  </div > "
+  $("#modal").html(modal);
+  $("#errorModal").modal();
+  $("#errorModal").modal('show');
+}
+
 /**
  * @summary: Show a modal with a message
  * @description: Show a  modal with a message removing te yes button. By default the message is Completed
@@ -454,6 +494,12 @@ function exportModel() {
             $(".navbar").css("filter", "blur(0px)");
             $(".nav").css("filter", "blur(0px)");
             generateDownloadLink(model);
+        })
+        .done(function (result){
+            doneModal("Model exported");
+        })
+        .fail(function (result){
+            modalError(result);
         });
 }
 /**
@@ -489,9 +535,6 @@ function buttonClick() {
     });
     $("#exportBTN").click(function () {
         exportModel();
-    });
-    $("#teste").click(function () {
-
     });
 }
 // main

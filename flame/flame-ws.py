@@ -31,15 +31,12 @@ from cherrypy.lib.static import serve_file
 
 # THIS PATH MUST BE DEFINED IN DEVELOPMENT ENVIRONMENTS WHERE FLAME
 # WAS NOT INSTALLED AS A PACKAGE
-# sys.path.append('/home/marc/Documents/flame/flame')
-sys.path.append('C:/Users/mpastor/Documents/soft/flame/flame')
+sys.path.append('/home/marc/Documents/flame/flame')
+# sys.path.append('C:/Users/mpastor/Documents/soft/flame/flame')
 
 import manage
 import context
 import util.utils as utils
-
-#TODO: Validate names in server to prevent curl 'attacks' like curl -d "model=@@@@@@@@" -X POST http://0.0.0.0:8081/addModel
-#The user cant addModels with rare characters
 
 # # TEMP: only to allow EBI model to run
 # def sensitivity(y_true, y_pred):
@@ -103,7 +100,7 @@ class FlameAddModel(object):
     def POST(self, model):
         if re.match('^[\w-]+$', model):
             result = manage.action_new(model)
-            return str(result)
+            return str(result[1])
         else:
             return "Non alphanumeric character detected. Aborting operation"
 
@@ -125,21 +122,21 @@ class FlameDeleteFamily(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model):
         result = manage.action_kill(model)
-        return result
+        return str(result[1])
 
 @cherrypy.expose
 class FlameDeleteVersion(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model, version):
         result = manage.action_remove(model, numeric_version(version))
-        return str(version)
+        return str(result[1])
 
 @cherrypy.expose
 class FlameCloneModel(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model):
         result = manage.action_publish(model)
-        return result
+        return str(result[1])
 
 @cherrypy.expose
 class FlameImportModel(object):
