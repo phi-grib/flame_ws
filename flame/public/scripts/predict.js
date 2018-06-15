@@ -205,7 +205,7 @@ function download(filename, text) {
     document.body.removeChild(element);
 }
 /**
- * Summary. Load both combos
+ * @summary. Load both combos
  * @description. Load model and version combo calling the server, if a param is passes the model is selected by default
  * @param {string} selected="" the model to be selected 
  * @param {string} selectedVersion="" the version to be selected

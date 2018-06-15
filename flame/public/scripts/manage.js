@@ -326,8 +326,6 @@ function selectedNode() {
             //Set the main table 
             $("#tBody").empty();
             $("#tBody").append("<tr><td>Select a version</td></tr>");
-            // $("#manage").addClass("border");
-            // $("#manage").addClass("rounded");
             //Sets the url to launch when the export button is pressed
             query = "exportModel?model=" + data.text;
             //document.getElementById("exportBTN").setAttribute("href", query);
@@ -386,7 +384,7 @@ function getInfo() {
                         + val + "</td></tr>");
 
                 }
-            } catch{
+            } catch(err){
                 $("#tBody").append("<tr><td>No info provided with this version</td></tr>");
             }
 
@@ -434,7 +432,11 @@ function doneModal(msg = "Completed") {
     $("#modalYes").remove();
     $("#modalBody").text(msg);
 }
-
+/**
+ * @summary: Shows a load animation and exports the selected model
+ * @description: Shows a load animation, blurs the page and add a transparent full screen div to prevent the user clicks.
+ * When the model is expoted the model is downloaded automaticlly and the animation, the blur and the div dissappears.
+ */
 function exportModel() {
     var model = $("#hiddenInput").val();
     $("#manageTab").css("filter", "blur(2px)");
@@ -454,7 +456,10 @@ function exportModel() {
             generateDownloadLink(model);
         });
 }
-
+/**
+ * @summary Generates and clicks an a element to download the exported model 
+ * @param {string} model Model to download
+ */
 function generateDownloadLink(model) {
     var element = document.createElement('a');
     element.setAttribute('href', "download?model=" + model);
