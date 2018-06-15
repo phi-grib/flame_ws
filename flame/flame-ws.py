@@ -31,7 +31,8 @@ from cherrypy.lib.static import serve_file
 
 # THIS PATH MUST BE DEFINED IN DEVELOPMENT ENVIRONMENTS WHERE FLAME
 # WAS NOT INSTALLED AS A PACKAGE
-sys.path.append('/home/marc/Documents/flame/flame')
+# sys.path.append('/home/marc/Documents/flame/flame')
+sys.path.append('C:/Users/mpastor/Documents/soft/flame/flame')
 
 import manage
 import context
@@ -86,10 +87,6 @@ class FlamePredictWS(object):
     def POST(self, ifile, model, version, temp_dir):
         
         ifile = os.path.join(tempfile.gettempdir(),temp_dir,ifile)
-        # if version[:3]=='ver': 
-        #     version = int(version[-6:]) ## get the numbers
-
-        # version = utils.intver(version)
 
         # TODO: for now, only working for plain models (no external input sources)          
         model = {'endpoint' : model,
@@ -134,9 +131,6 @@ class FlameDeleteFamily(object):
 class FlameDeleteVersion(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model, version):
-        # version = version.replace("ver", "")
-        # version = version.lstrip( '0' )
-        # result = manage.action_remove(model, int(version))
         result = manage.action_remove(model, numeric_version(version))
         return str(version)
 
@@ -152,7 +146,6 @@ class FlameImportModel(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model):
         model = os.path.join(tempfile.gettempdir(),model)
-        # model = os.path.join('./',model)
         result = manage.action_import(model)
         return result
 
@@ -171,12 +164,6 @@ class FlameInfoWS(object):
 class FlameModelInfo(object):
     @cherrypy.tools.accept(media='text/plain')
     def POST(self, model, version, output):
-        # if version=="dev":
-        #     version=0
-        # else:
-        #     version = version.replace("ver", "")
-        #     version = version.lstrip( '0' )
-        # version = utils.intver(version)
         result = manage.action_info(model, numeric_version(version), output)
         return result[1]
 
