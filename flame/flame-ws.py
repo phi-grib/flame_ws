@@ -31,8 +31,8 @@ from cherrypy.lib.static import serve_file
 
 # THIS PATH MUST BE DEFINED IN DEVELOPMENT ENVIRONMENTS WHERE FLAME
 # WAS NOT INSTALLED AS A PACKAGE
-sys.path.append('/home/marc/Documents/flame/flame')
-# sys.path.append('C:/Users/mpastor/Documents/soft/flame/flame')
+#sys.path.append('/home/marc/Documents/flame/flame')
+sys.path.append('C:/Users/mpastor/Documents/soft/flame/flame')
 
 import manage
 import context
@@ -90,7 +90,7 @@ class FlamePredictWS(object):
                  'version' : numeric_version(version),
                  'infile' : ifile}
 
-        success, results = context.predict_cmd(model)
+        success, results = context.predict_cmd(model, 'JSON')
         
         return results
 
