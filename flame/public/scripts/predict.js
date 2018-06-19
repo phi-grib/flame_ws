@@ -41,7 +41,7 @@ function sortKeys(myjson) {
 
     // special keys, already processed (obj_nam, SMILES and main[])
     // or never shown in a table (origin and meta)
-    const black_list = key_list.concat(['origin', 'meta', 'manifest', 'obj_num', 'warning']);
+    const black_list = key_list.concat(['origin', 'meta', 'manifest', 'obj_num', 'warning','external-validation']);
 
     for (var key in myjson) {
         if (!black_list.includes(key)) {
@@ -237,7 +237,7 @@ function loadCombos(selected = "", selectedVersion= "") {
                 for (vi in models) {
                     if (models[vi]["text"] == $("#model option:selected").text()) {
                         for (counter in models[vi]["nodes"]) {
-                            versionToShow = Object.values(models[vi]["nodes"])
+                            versionToShow = Object.values(models[vi]["nodes"]);
                             if (versionToShow[counter]["text"]== selectedVersion){
                                 var_select.options[counter] = new Option(versionToShow[counter]["text"], +counter + 1, false, true);    
                             }else{
@@ -262,7 +262,7 @@ function versionChangerHandler() {
         for (vi in models) {
             if (models[vi]["text"] == $("#model option:selected").text()) {
                 for (counter in models[vi]["nodes"]) {
-                    versionToShow = Object.values(models[vi]["nodes"])
+                    versionToShow = Object.values(models[vi]["nodes"]);
                     var_select.options[counter] = new Option(versionToShow[counter]["text"], +counter + 1);
                 }
                 return;
