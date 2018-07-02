@@ -34,10 +34,9 @@ from cherrypy.lib.static import serve_file
 #sys.path.append('/home/marc/Documents/flame/flame')
 sys.path.append('C:/Users/mpastor/Documents/soft/flame/flame')
 
-import manage
-import context
-import util.utils as utils
-
+import flame.manage as manage
+import flame.context as context
+from flame.util import utils
 # # TEMP: only to allow EBI model to run
 # def sensitivity(y_true, y_pred):
 #     tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
@@ -150,10 +149,11 @@ class FlameImportModel(object):
 class FlameInfoWS(object):
     @cherrypy.tools.accept(media='text/plain')
     def GET(self):
-        data = { "provider": utils.configuration['provider'],
-                 "homepage": utils.configuration['homepage'],
-                 "admin_name": utils.configuration['admin_name'],
-                 "admin_email": utils.configuration['admin_email']
+        config_data = utils._read_configuration()
+        data = { "provider": config_data['provider'],
+                 "homepage": config_data['homepage'],
+                 "admin_name": config_data['admin_name'],
+                 "admin_email": config_data['admin_email']
                 }   
         return json.dumps(data)
 
