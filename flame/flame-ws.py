@@ -34,9 +34,9 @@ from cherrypy.lib.static import serve_file
 #sys.path.append('/home/marc/Documents/flame/flame')
 sys.path.append('C:/Users/mpastor/Documents/soft/flame/flame')
 
-import manage
-import context
-import util.utils as utils
+from flame import manage
+from flame import context
+# from flame import utils 
 
 # # TEMP: only to allow EBI model to run
 # def sensitivity(y_true, y_pred):
