@@ -27,6 +27,7 @@ import tempfile
 import json
 import re
 import cherrypy
+from pathlib import Path
 from cherrypy.lib.static import serve_file
 
 # THIS PATH MUST BE DEFINED IN DEVELOPMENT ENVIRONMENTS WHERE FLAME
@@ -58,6 +59,7 @@ class FlamePredict(object):
     @cherrypy.expose
     def index(self):
         return open('./templates/index.html')
+        # return open(os.path.split(os.path.realpath(__file__))[0]+ '/templates/index.html') TODO: Make it works
 
     @cherrypy.expose
     def upload(self):
@@ -150,10 +152,11 @@ class FlameImportModel(object):
 class FlameInfoWS(object):
     @cherrypy.tools.accept(media='text/plain')
     def GET(self):
-        data = { "provider": utils.configuration['provider'],
-                 "homepage": utils.configuration['homepage'],
-                 "admin_name": utils.configuration['admin_name'],
-                 "admin_email": utils.configuration['admin_email']
+        config_data = utils._read_configuration()
+        data = { "provider": config_data['provider'],
+                 "homepage": config_data['homepage'],
+                 "admin_name": config_data['admin_name'],
+                 "admin_email": config_data['admin_email']
                 }   
         return json.dumps(data)
 
