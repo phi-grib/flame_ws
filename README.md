@@ -13,7 +13,7 @@ The server is started by typing:
 python flame-ws.py 
 ```	
 
-To access the web graphical interface, open a web brower and enter the address *http://localhost:8081*
+To access the web graphical interface, open a web browser and enter the address *http://localhost:8081*
 
 The web page contains two tabs
 
