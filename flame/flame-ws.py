@@ -2,9 +2,9 @@
 
 ##    Description    Flame web-service
 ##
-##    Authors:       Manuel Pastor (manuel.pastor@upf.edu)
+##    Authors:       Marc Serret i Garcia (marcserret@live.com)
 ##
-##    Copyright 2018 Manuel Pastor
+##    Copyright 2018 Marc Serret i Garcia
 ##
 ##    This file is part of Flame
 ##
