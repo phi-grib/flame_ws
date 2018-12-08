@@ -26,27 +26,15 @@ import shutil
 import tempfile
 import json
 import re
-import cherrypy
 from pathlib import Path
+
+import cherrypy
 from cherrypy.lib.static import serve_file
 
-# THIS PATH MUST BE DEFINED IN DEVELOPMENT ENVIRONMENTS WHERE FLAME
-# WAS NOT INSTALLED AS A PACKAGE
-#sys.path.append('/home/marc/Documents/flame/flame')
-sys.path.append('C:/Users/mpastor/Documents/soft/flame/flame')
 
 from flame import manage
 from flame import context
 # from flame import utils 
-
-# # TEMP: only to allow EBI model to run
-# def sensitivity(y_true, y_pred):
-#     tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
-#     return(tp / (tp+fn))
-
-# def specificity(y_true, y_pred):
-#     tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
-#     return(tn / (tn+fp))
 
 def numeric_version (text_version):
     version=0
@@ -244,7 +232,7 @@ if __name__ == '__main__':
             'tools.staticdir.dir': './public',
         },
         'global' : {
-            'server.socket_host' : '0.0.0.0',
+            'server.socket_host' : '127.0.0.1',
             'server.socket_port' : 8081,
             'server.thread_pool' : 8,
         }
