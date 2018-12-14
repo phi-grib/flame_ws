@@ -232,7 +232,7 @@ if __name__ == '__main__':
             'tools.staticdir.dir': './public',
         },
         'global' : {
-            'server.socket_host' : '127.0.0.1',
+            'server.socket_host' : '0.0.0.0',
             'server.socket_port' : 8081,
             'server.thread_pool' : 8,
         }
