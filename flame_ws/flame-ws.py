@@ -34,7 +34,7 @@ from cherrypy.lib.static import serve_file
 
 from flame import manage
 from flame import context
-# from flame import utils 
+from flame.util import utils
 
 def numeric_version (text_version):
     version=0

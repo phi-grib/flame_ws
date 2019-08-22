@@ -41,7 +41,7 @@ function sortKeys(myjson) {
 
     // special keys, already processed (obj_nam, SMILES and main[])
     // or never shown in a table (origin and meta)
-    const black_list = key_list.concat(['origin', 'meta', 'manifest', 'obj_num', 'warning','external-validation']);
+    const black_list = key_list.concat(['origin', 'meta', 'manifest', 'obj_num', 'warning','external-validation','ensemble_confidence']);
 
     for (var key in myjson) {
         if (!black_list.includes(key)) {
