@@ -78,6 +78,7 @@ class FlamePredictWS(object):
         # TODO: for now, only working for plain models (no external input sources)          
         model = {'endpoint' : model,
                  'version' : numeric_version(version),
+                 'label': 'temp',
                  'infile' : ifile}
 
         success, results = context.predict_cmd(model, 'JSON')
