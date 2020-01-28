@@ -270,7 +270,29 @@ function cloneModel() {
  */
 function loadTree() {
     $.get('/dir').done(function (result) {
-        result = JSON.parse(result);
+        models = JSON.parse(result);
+
+        // results provided by Flame must be reformated 
+        var new_result = [];
+        
+        for (model in models) {
+            model_name = models[model]["modelname"]; // string
+            version_list = models[model]["versions"]; // simple list with version numbers
+            
+            // this is the new format, used by treeview widget
+            result_versions = [];
+            for (version in version_list) {
+                // add the version numbers as a dictionay with a single "text" key
+                result_versions.push({"text": version_list[version].toString()}) 
+            }
+
+            // add the model name and versions in the new format
+            new_result.push({
+                "text" : model_name,
+                "nodes": result_versions
+            });
+        }
+
         $('#tree').treeview({
             color: undefined,
             onhoverColor: '#edba74',
@@ -280,7 +302,7 @@ function loadTree() {
             backColor: '#f8f9fa',
             borderColor: '#dfe0e1',
             levels: 0,
-            data: result
+            data: new_result
         });
         selectedNode();
         $("#tree ul").addClass("list-group-flush");

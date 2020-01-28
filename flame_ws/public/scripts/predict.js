@@ -218,30 +218,29 @@ function loadCombos(selected = "", selectedVersion= "") {
             var model_select = $("#model")[0];
 
             for (model in models) {
-                if (models[model]["text"] == selected.toString()) {
-                    model_select.options[model] = new Option(models[model]["text"], +model + 1, false, true);
+                if (models[model]["modelname"] == selected.toString()) {
+                    model_select.options[model] = new Option(models[model]["modelname"], +model + 1, false, true);
                 } else {
-                    model_select.options[model] = new Option(models[model]["text"], +model + 1);
+                    model_select.options[model] = new Option(models[model]["modelname"], +model + 1);
                 }
-
             }
-
             var var_select = $("#version")[0];
-            vmodel = models[0]["nodes"];
+            vmodel = models[0]["versions"];
             for (vj in vmodel) {
-                var_select.options[vj] = new Option(vmodel[vj]["text"], +vj + 1);
+                var_select.options[vj] = new Option(vj.toString(), +vj + 1);
             }
+
             $("#model").prop("selected", function (i, selected) {
                 $("#version").empty();
                 var var_select = $("#version")[0];
                 for (vi in models) {
-                    if (models[vi]["text"] == $("#model option:selected").text()) {
-                        for (counter in models[vi]["nodes"]) {
-                            versionToShow = Object.values(models[vi]["nodes"]);
-                            if (versionToShow[counter]["text"]== selectedVersion){
-                                var_select.options[counter] = new Option(versionToShow[counter]["text"], +counter + 1, false, true);    
+                    if (models[vi]["modelname"] == $("#model option:selected").text()) {
+                        for (counter in models[vi]["versions"]) {
+                            versionToShow = Object.values(models[vi]["versions"]);
+                            if (versionToShow[counter]== selectedVersion){
+                                var_select.options[counter] = new Option(versionToShow[counter].toString(), +counter + 1, false, true);    
                             }else{
-                                var_select.options[counter] = new Option(versionToShow[counter]["text"], +counter + 1);
+                                var_select.options[counter] = new Option(versionToShow[counter].toString(), +counter + 1);
                             }
                             
                         }
@@ -249,6 +248,7 @@ function loadCombos(selected = "", selectedVersion= "") {
                     }
                 }
             });
+
         });
     versionChangerHandler();
 }
@@ -260,10 +260,10 @@ function versionChangerHandler() {
         $("#version").empty();
         var var_select = $("#version")[0];
         for (vi in models) {
-            if (models[vi]["text"] == $("#model option:selected").text()) {
-                for (counter in models[vi]["nodes"]) {
-                    versionToShow = Object.values(models[vi]["nodes"]);
-                    var_select.options[counter] = new Option(versionToShow[counter]["text"], +counter + 1);
+            if (models[vi]["modelname"] == $("#model option:selected").text()) {
+                versionToShow = Object.values(models[vi]["versions"]);
+                for (counter in models[vi]["versions"]) {
+                    var_select.options[counter] = new Option(versionToShow[counter].toString(), +counter + 1);
                 }
                 return;
             }
